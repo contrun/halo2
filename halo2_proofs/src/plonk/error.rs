@@ -1,7 +1,6 @@
-use std::cmp;
-use std::error;
-use std::fmt;
-use std::io;
+use crate::io;
+use core::cmp;
+use core::fmt;
 
 use super::{Any, Column};
 
@@ -79,15 +78,6 @@ impl fmt::Display for Error {
                 "Column {:?} must be included in the permutation. Help: try applying `meta.enable_equalty` on the column",
                 column
             ),
-        }
-    }
-}
-
-impl error::Error for Error {
-    fn source(&self) -> Option<&(dyn error::Error + 'static)> {
-        match self {
-            Error::Transcript(e) => Some(e),
-            _ => None,
         }
     }
 }

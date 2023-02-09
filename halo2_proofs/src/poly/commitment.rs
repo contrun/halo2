@@ -11,9 +11,10 @@ use halo2curves::{CurveAffine, CurveExt, FieldExt};
 use rand_core::RngCore;
 use std::{
     fmt::Debug,
-    io::{self, Read, Write},
     ops::{Add, AddAssign, Mul, MulAssign},
 };
+
+use crate::io::{self, Read, Write};
 
 /// Defines components of a commitment scheme.
 pub trait CommitmentScheme {

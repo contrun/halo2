@@ -14,7 +14,7 @@ use std::fmt::Debug;
 use std::marker::PhantomData;
 use std::ops::{Add, AddAssign, Mul, MulAssign};
 
-use std::io;
+use crate::io;
 
 use super::msm::MSMKZG;
 
@@ -204,20 +204,12 @@ impl<E: Engine + Debug> ParamsKZG<E> {
                 let g = load_points_from_file_parallelly(reader)?;
                 let g: Vec<<E as Engine>::G1Affine> = g
                     .iter()
-                    .map(|point| {
-                        point.ok_or_else(|| {
-                            io::Error::new(io::ErrorKind::Other, "invalid point encoding")
-                        })
-                    })
+                    .map(|point| point.ok_or("invalid point encoding"))
                     .collect::<Result<_, _>>()?;
                 let g_lagrange = load_points_from_file_parallelly(reader)?;
                 let g_lagrange: Vec<<E as Engine>::G1Affine> = g_lagrange
                     .iter()
-                    .map(|point| {
-                        point.ok_or_else(|| {
-                            io::Error::new(io::ErrorKind::Other, "invalid point encoding")
-                        })
-                    })
+                    .map(|point| point.ok_or("invalid point encoding"))
                     .collect::<Result<_, _>>()?;
                 (g, g_lagrange)
             }
@@ -368,7 +360,7 @@ mod test {
     use std::marker::PhantomData;
     use std::ops::{Add, AddAssign, Mul, MulAssign};
 
-    use std::io;
+    use crate::io;
 
     #[test]
     fn test_commit_lagrange() {

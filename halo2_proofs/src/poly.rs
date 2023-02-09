@@ -11,7 +11,7 @@ use ff::PrimeField;
 use group::ff::{BatchInvert, Field};
 use halo2curves::FieldExt;
 use std::fmt::Debug;
-use std::io;
+use crate::io;
 use std::marker::PhantomData;
 use std::ops::{Add, Deref, DerefMut, Index, IndexMut, Mul, RangeFrom, RangeFull, Sub};
 

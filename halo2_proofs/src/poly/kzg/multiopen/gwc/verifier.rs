@@ -1,5 +1,5 @@
 use std::fmt::Debug;
-use std::io::Read;
+use crate::io::Read;
 use std::marker::PhantomData;
 
 use super::{construct_intermediate_sets, ChallengeU, ChallengeV};

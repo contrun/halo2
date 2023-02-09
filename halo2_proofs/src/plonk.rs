@@ -41,8 +41,8 @@ pub use keygen::*;
 pub use prover::*;
 pub use verifier::*;
 
+use crate::io;
 use evaluation::Evaluator;
-use std::io;
 
 /// This is a verifying key which allows for the verification of proofs for a
 /// particular circuit.

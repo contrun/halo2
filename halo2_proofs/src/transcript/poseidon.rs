@@ -1,12 +1,12 @@
 use super::{Challenge255, EncodedChallenge, Transcript, TranscriptRead, TranscriptWrite};
 use crate::helpers::base_to_scalar;
+use crate::io::{self, Read, Write};
 use ff::Field;
 use group::ff::PrimeField;
 use halo2curves::{Coordinates, CurveAffine, FieldExt};
 use num_bigint::BigUint;
 use poseidon::Poseidon;
 use std::convert::TryInto;
-use std::io::{self, Read, Write};
 use std::marker::PhantomData;
 
 const POSEIDON_RATE: usize = 8usize;
@@ -38,12 +38,8 @@ impl<R: Read, C: CurveAffine> TranscriptRead<C, Challenge255<C>>
     fn read_point(&mut self) -> io::Result<C> {
         let mut compressed = C::Repr::default();
         self.reader.read_exact(compressed.as_mut())?;
-        let point: C = Option::from(C::from_bytes(&compressed)).ok_or_else(|| {
-            io::Error::new(
-                io::ErrorKind::Other,
-                "invalid point encoding in proof for poseidon",
-            )
-        })?;
+        let point: C = Option::from(C::from_bytes(&compressed))
+            .ok_or("invalid point encoding in proof for poseidon")?;
         self.common_point(point)?;
 
         Ok(point)
@@ -52,12 +48,8 @@ impl<R: Read, C: CurveAffine> TranscriptRead<C, Challenge255<C>>
     fn read_scalar(&mut self) -> io::Result<C::Scalar> {
         let mut data = <C::Scalar as PrimeField>::Repr::default();
         self.reader.read_exact(data.as_mut())?;
-        let scalar: C::Scalar = Option::from(C::Scalar::from_repr(data)).ok_or_else(|| {
-            io::Error::new(
-                io::ErrorKind::Other,
-                "invalid field element encoding in proof for poseidon",
-            )
-        })?;
+        let scalar: C::Scalar = Option::from(C::Scalar::from_repr(data))
+            .ok_or("invalid field element encoding in proof for poseidon")?;
         self.common_scalar(scalar)?;
 
         Ok(scalar)
@@ -77,12 +69,8 @@ impl<R: Read, C: CurveAffine> Transcript<C, Challenge255<C>>
 
     fn common_point(&mut self, point: C) -> io::Result<()> {
         //self.state.update(&[PREFIX_POINT]);
-        let coords: Coordinates<C> = Option::from(point.coordinates()).ok_or_else(|| {
-            io::Error::new(
-                io::ErrorKind::Other,
-                "cannot write points at infinity to the transcript",
-            )
-        })?;
+        let coords: Coordinates<C> = Option::from(point.coordinates())
+            .ok_or("cannot write points at infinity to the transcript")?;
         let x = coords.x();
         let y = coords.y();
         self.state
@@ -151,12 +139,8 @@ impl<W: Write, C: CurveAffine> Transcript<C, Challenge255<C>>
 
     fn common_point(&mut self, point: C) -> io::Result<()> {
         //self.state.update(&[PREFIX_POINT]);
-        let coords: Coordinates<C> = Option::from(point.coordinates()).ok_or_else(|| {
-            io::Error::new(
-                io::ErrorKind::Other,
-                "cannot write points at infinity to the transcript",
-            )
-        })?;
+        let coords: Coordinates<C> = Option::from(point.coordinates())
+            .ok_or("cannot write points at infinity to the transcript")?;
         let x = coords.x();
         let y = coords.y();
         self.state

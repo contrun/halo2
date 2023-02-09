@@ -21,7 +21,7 @@ mod test {
     use group::{Curve, Group};
     use halo2curves::CurveAffine;
     use rand_core::{OsRng, RngCore};
-    use std::io::{Read, Write};
+    use crate::io::{Read, Write};
 
     #[test]
     fn test_roundtrip_ipa() {

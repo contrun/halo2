@@ -1,4 +1,4 @@
-use std::io::Read;
+use crate::io::Read;
 
 use group::{
     ff::{BatchInvert, Field},

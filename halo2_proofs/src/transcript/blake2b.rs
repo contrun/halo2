@@ -8,7 +8,7 @@ use group::ff::PrimeField;
 use halo2curves::{Coordinates, CurveAffine, FieldExt};
 use num_bigint::BigUint;
 use std::convert::TryInto;
-use std::io::{self, Read, Write};
+use crate::io::{self, Read, Write};
 use std::marker::PhantomData;
 
 /// Prefix to a prover's message soliciting a challenge

@@ -22,7 +22,7 @@ mod verifier;
 pub use prover::create_proof;
 pub use verifier::verify_proof;
 
-use std::io;
+use crate::io;
 
 /// Public parameters for IPA commitment scheme
 #[derive(Debug, Clone)]
@@ -249,7 +249,7 @@ mod test {
     use std::marker::PhantomData;
     use std::ops::{Add, AddAssign, Mul, MulAssign};
 
-    use std::io;
+    use crate::io;
 
     #[test]
     fn test_commit_lagrange_epaffine() {

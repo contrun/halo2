@@ -19,7 +19,7 @@ use halo2curves::pairing::Engine;
 use rand_core::RngCore;
 use rayon::prelude::*;
 use std::fmt::Debug;
-use std::io::{self, Write};
+use crate::io::{self, Write};
 use std::marker::PhantomData;
 use std::ops::MulAssign;
 

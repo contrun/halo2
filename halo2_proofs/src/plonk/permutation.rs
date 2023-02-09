@@ -14,7 +14,7 @@ pub(crate) mod keygen;
 pub(crate) mod prover;
 pub(crate) mod verifier;
 
-use std::io;
+use crate::io;
 
 /// A permutation argument.
 #[derive(Debug, Clone)]
