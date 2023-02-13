@@ -1,6 +1,8 @@
 use core::convert::TryInto;
 use core::iter;
 
+use crate::format;
+use crate::Vec;
 use halo2_proofs::{
     arithmetic::FieldExt,
     circuit::{AssignedCell, Cell, Chip, Layouter, Region, Value},

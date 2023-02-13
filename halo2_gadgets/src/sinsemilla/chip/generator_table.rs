@@ -1,11 +1,11 @@
+use super::{CommitDomains, FixedPoints, HashDomains};
+use crate::sinsemilla::primitives::{self as sinsemilla, SINSEMILLA_S};
+use crate::vec;
 use halo2_proofs::{
     circuit::{Layouter, Value},
     plonk::{ConstraintSystem, Error, Expression, TableColumn},
     poly::Rotation,
 };
-
-use super::{CommitDomains, FixedPoints, HashDomains};
-use crate::sinsemilla::primitives::{self as sinsemilla, SINSEMILLA_S};
 use halo2curves::{pasta::pallas, FieldExt};
 
 /// Table containing independent generators S[0..2^k]

@@ -1,10 +1,11 @@
 //! Gadget and chips for the Sinsemilla hash function.
+use crate::Vec;
+use core::fmt::Debug;
 use ff::PrimeFieldBits;
 use halo2_proofs::{
     arithmetic::FieldExt,
     circuit::{AssignedCell, Cell, Value},
 };
-use core::fmt::Debug;
 
 /// A [`Message`] composed of several [`MessagePiece`]s.
 #[derive(Clone, Debug)]

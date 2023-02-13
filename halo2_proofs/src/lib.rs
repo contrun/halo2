@@ -37,14 +37,15 @@ macro_rules! maybe_eprint {
 extern crate alloc;
 use alloc::{borrow::ToOwned, format, string::String, string::ToString, vec, vec::Vec};
 
-pub mod arithmetic;
-pub mod circuit;
 pub mod collections {
     pub use alloc::collections::{BTreeMap, BTreeSet};
     pub use hashbrown::{HashMap, HashSet};
 }
 pub use halo2curves;
 pub use halo2curves::io;
+
+pub mod arithmetic;
+pub mod circuit;
 mod multicore;
 pub mod plonk;
 pub mod poly;

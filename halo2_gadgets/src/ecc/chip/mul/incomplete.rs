@@ -1,6 +1,7 @@
 use super::super::NonIdentityEccPoint;
 use super::{X, Y, Z};
 use crate::utilities::bool_check;
+use crate::Vec;
 use halo2_proofs::{
     circuit::{Region, Value},
     plonk::{

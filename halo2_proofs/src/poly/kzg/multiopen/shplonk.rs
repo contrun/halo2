@@ -159,7 +159,7 @@ mod proptests {
     use halo2curves::{pasta::Fp, FieldExt};
 
     use core::convert::TryFrom;
-    use std::collections::BTreeMap;
+    use crate::collections::BTreeMap;
 
     #[derive(Debug, Clone)]
     struct MyQuery<F> {

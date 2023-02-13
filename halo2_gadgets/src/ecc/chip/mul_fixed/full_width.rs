@@ -1,4 +1,6 @@
 use super::super::{EccPoint, EccScalarFixed, FixedPoints, FIXED_BASE_WINDOW_SIZE, H, NUM_WINDOWS};
+use crate::format;
+use crate::Vec;
 
 use crate::utilities::{decompose_word, range_check};
 use arrayvec::ArrayVec;

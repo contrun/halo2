@@ -1,5 +1,7 @@
 //! Chip implementing a Merkle hash using Sinsemilla as the hash function.
 
+use crate::format;
+use crate::{vec, Vec};
 use halo2_proofs::{
     circuit::{AssignedCell, Chip, Layouter, Value},
     plonk::{Advice, Column, ConstraintSystem, Constraints, Error, Selector},

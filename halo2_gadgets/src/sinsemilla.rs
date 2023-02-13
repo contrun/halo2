@@ -1,17 +1,19 @@
 //! The [Sinsemilla] hash function.
 //!
 //! [Sinsemilla]: https://zips.z.cash/protocol/protocol.pdf#concretesinsemillahash
+use crate::format;
+use crate::Vec;
 use crate::{
     ecc::{self, EccInstructions, FixedPoints},
     utilities::{FieldValue, RangeConstrained, Var},
 };
+use core::fmt::Debug;
 use group::ff::{Field, PrimeField};
 use halo2_proofs::{
     circuit::{Layouter, Value},
     plonk::Error,
 };
 use halo2curves::CurveAffine;
-use core::fmt::Debug;
 
 pub mod chip;
 pub mod merkle;

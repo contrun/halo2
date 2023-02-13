@@ -1,4 +1,4 @@
-use std::collections::HashSet;
+use crate::collections::HashSet;
 
 use super::NonIdentityEccPoint;
 use halo2_proofs::{

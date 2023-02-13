@@ -13,7 +13,7 @@
 //! implemented by multiple chips, enabling different performance trade-offs to be made.
 //! Chips can be highly optimised by their developers, as long as they conform to the
 //! defined instructions.
-
+#![cfg_attr(not(test), no_std)]
 #![cfg_attr(docsrs, feature(doc_cfg))]
 // Temporary until we have more of the crate implemented.
 #![allow(dead_code)]
@@ -30,3 +30,14 @@ pub mod poseidon;
 pub mod sha256;
 pub mod sinsemilla;
 pub mod utilities;
+
+extern crate alloc;
+use alloc::{format, string::String, vec, vec::Vec};
+
+pub mod collections {
+    //! crate::collections replacement
+    pub use alloc::collections::{BTreeMap, BTreeSet};
+    pub use hashbrown::{HashMap, HashSet};
+}
+pub use halo2curves;
+pub use halo2curves::io;

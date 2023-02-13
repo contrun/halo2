@@ -8,6 +8,7 @@ use halo2curves::CurveAffine;
 
 use super::{HashDomains, SinsemillaInstructions};
 
+use crate::format;
 use crate::utilities::{cond_swap::CondSwapInstructions, i2lebsp, UtilitiesInstructions};
 
 pub mod chip;

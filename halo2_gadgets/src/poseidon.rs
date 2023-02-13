@@ -4,6 +4,8 @@ use core::convert::TryInto;
 use core::fmt;
 use core::marker::PhantomData;
 
+use crate::format;
+use crate::Vec;
 use group::ff::Field;
 use halo2_proofs::{
     arithmetic::FieldExt,

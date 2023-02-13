@@ -1,13 +1,14 @@
 //! Utility gadgets.
 
+use crate::Vec;
+use core::marker::PhantomData;
+use core::ops::Range;
 use ff::{Field, PrimeFieldBits};
 use halo2_proofs::{
     circuit::{AssignedCell, Cell, Layouter, Value},
     plonk::{Advice, Column, Error, Expression},
 };
 use halo2curves::FieldExt;
-use core::marker::PhantomData;
-use core::ops::Range;
 
 pub mod cond_swap;
 pub mod decompose_running_sum;
@@ -240,6 +241,8 @@ pub fn i2lebsp<const NUM_BITS: usize>(int: u64) -> [bool; NUM_BITS] {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use core::convert::TryInto;
+    use core::iter;
     use group::ff::{Field, PrimeField};
     use halo2_proofs::{
         circuit::{Layouter, SimpleFloorPlanner},
@@ -250,8 +253,6 @@ mod tests {
     use halo2curves::{pasta::pallas, FieldExt};
     use proptest::prelude::*;
     use rand::rngs::OsRng;
-    use core::convert::TryInto;
-    use core::iter;
     use uint::construct_uint;
 
     #[test]

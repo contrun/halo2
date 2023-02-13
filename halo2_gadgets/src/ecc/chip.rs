@@ -1,6 +1,8 @@
 //! Chip implementations for the ECC gadgets.
 
 use super::{BaseFitsInScalarInstructions, EccInstructions, FixedPoints};
+use crate::format;
+use crate::Vec;
 use crate::{
     sinsemilla::primitives as sinsemilla,
     utilities::{lookup_range_check::LookupRangeCheckConfig, UtilitiesInstructions},

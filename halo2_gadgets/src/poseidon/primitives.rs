@@ -5,6 +5,8 @@ use core::fmt;
 use core::iter;
 use core::marker::PhantomData;
 
+use crate::Vec;
+use crate::{format, String};
 use halo2_proofs::arithmetic::FieldExt;
 
 pub(crate) mod fp;

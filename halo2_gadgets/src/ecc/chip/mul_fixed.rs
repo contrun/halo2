@@ -2,7 +2,9 @@ use super::{
     add, add_incomplete, EccBaseFieldElemFixed, EccScalarFixed, EccScalarFixedShort, FixedPoint,
     NonIdentityEccPoint, FIXED_BASE_WINDOW_SIZE, H,
 };
+use crate::format;
 use crate::utilities::decompose_running_sum::RunningSumConfig;
+use crate::{vec, Vec};
 
 use core::marker::PhantomData;
 

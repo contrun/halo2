@@ -30,8 +30,10 @@ use halo2_proofs::{
 };
 
 use super::range_check;
-use halo2curves::FieldExt;
+use crate::format;
+use crate::{vec, Vec};
 use core::marker::PhantomData;
+use halo2curves::FieldExt;
 
 /// The running sum $[z_0, ..., z_W]$. If created in strict mode, $z_W = 0$.
 #[derive(Debug)]

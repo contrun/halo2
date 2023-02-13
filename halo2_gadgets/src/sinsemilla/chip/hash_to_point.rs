@@ -1,5 +1,7 @@
 use super::super::{CommitDomains, HashDomains, SinsemillaInstructions};
 use super::{NonIdentityEccPoint, SinsemillaChip};
+use crate::format;
+use crate::Vec;
 use crate::{
     ecc::FixedPoints,
     sinsemilla::primitives::{self as sinsemilla, lebs2ip_k, INV_TWO_POW_K, SINSEMILLA_S},

@@ -1,12 +1,15 @@
 //! Make use of a K-bit lookup table to decompose a field element into K-bit
 //! words.
 
+use core::{convert::TryInto, marker::PhantomData};
 use halo2_proofs::{
     circuit::{AssignedCell, Layouter, Region},
     plonk::{Advice, Column, ConstraintSystem, Constraints, Error, Selector, TableColumn},
     poly::Rotation,
 };
-use std::{convert::TryInto, marker::PhantomData};
+
+use crate::format;
+use crate::{vec, Vec};
 
 use ff::PrimeFieldBits;
 

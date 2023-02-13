@@ -1,9 +1,10 @@
 use super::{add, EccPoint, NonIdentityEccPoint, ScalarVar, T_Q};
+use crate::Vec;
 use crate::{
     sinsemilla::primitives as sinsemilla,
     utilities::{bool_check, lookup_range_check::LookupRangeCheckConfig, ternary},
 };
-use std::{
+use core::{
     convert::TryInto,
     ops::{Deref, Range},
 };

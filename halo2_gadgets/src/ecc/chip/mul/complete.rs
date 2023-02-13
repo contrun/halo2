@@ -1,6 +1,7 @@
 use super::super::{add, EccPoint};
 use super::{COMPLETE_RANGE, X, Y, Z};
 use crate::utilities::{bool_check, ternary};
+use crate::Vec;
 
 use halo2_proofs::{
     circuit::{Region, Value},

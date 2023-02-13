@@ -1,5 +1,6 @@
 //! Constants required for the ECC chip.
 
+use crate::Vec;
 use arrayvec::ArrayVec;
 use group::{
     ff::{Field, PrimeField},

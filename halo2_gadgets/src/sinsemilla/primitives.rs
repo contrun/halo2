@@ -1,5 +1,7 @@
 //! Implementation of Sinsemilla outside the circuit.
 
+use crate::format;
+use crate::Vec;
 use group::{Curve, Wnaf};
 use halo2_proofs::arithmetic::{CurveAffine, CurveExt};
 use halo2curves::pasta::pallas;

@@ -4,6 +4,7 @@ use super::{
     message::{Message, MessagePiece},
     primitives as sinsemilla, CommitDomains, HashDomains, SinsemillaInstructions,
 };
+use crate::Vec;
 use crate::{
     ecc::{
         chip::{DoubleAndAdd, NonIdentityEccPoint},
