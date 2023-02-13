@@ -4,7 +4,7 @@ use super::{
 };
 use crate::utilities::decompose_running_sum::RunningSumConfig;
 
-use std::marker::PhantomData;
+use core::marker::PhantomData;
 
 use group::{
     ff::{PrimeField, PrimeFieldBits},

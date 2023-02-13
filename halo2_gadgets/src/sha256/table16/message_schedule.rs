@@ -1,4 +1,4 @@
-use std::convert::TryInto;
+use core::convert::TryInto;
 
 use super::{super::BLOCK_SIZE, AssignedBits, BlockWord, SpreadInputs, Table16Assignment, ROUNDS};
 use halo2_proofs::{
@@ -23,7 +23,7 @@ pub use schedule_util::msg_schedule_test_input;
 #[derive(Clone, Debug)]
 pub(super) struct MessageWord(AssignedBits<32>);
 
-impl std::ops::Deref for MessageWord {
+impl core::ops::Deref for MessageWord {
     type Target = AssignedBits<32>;
 
     fn deref(&self) -> &Self::Target {

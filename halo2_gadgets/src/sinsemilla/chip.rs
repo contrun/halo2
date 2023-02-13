@@ -11,7 +11,7 @@ use crate::{
     },
     utilities::lookup_range_check::LookupRangeCheckConfig,
 };
-use std::marker::PhantomData;
+use core::marker::PhantomData;
 
 use halo2_proofs::{
     circuit::{AssignedCell, Chip, Layouter, Value},

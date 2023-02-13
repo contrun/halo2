@@ -1,4 +1,4 @@
-use std::{fmt::Debug, ops::Deref};
+use core::{fmt::Debug, ops::Deref};
 
 use super::commitment::{Blind, CommitmentScheme, Params, MSM};
 use crate::{
@@ -37,7 +37,7 @@ pub struct PolynomialPointer<'com, C: CurveAffine> {
 
 impl<'com, C: CurveAffine> PartialEq for PolynomialPointer<'com, C> {
     fn eq(&self, other: &Self) -> bool {
-        std::ptr::eq(self.poly, other.poly)
+        core::ptr::eq(self.poly, other.poly)
     }
 }
 
@@ -113,9 +113,9 @@ impl<'r, C: CurveAffine, M: MSM<C>> PartialEq for CommitmentReference<'r, C, M> 
     fn eq(&self, other: &Self) -> bool {
         match (self, other) {
             (&CommitmentReference::Commitment(a), &CommitmentReference::Commitment(b)) => {
-                std::ptr::eq(a, b)
+                core::ptr::eq(a, b)
             }
-            (&CommitmentReference::MSM(a), &CommitmentReference::MSM(b)) => std::ptr::eq(a, b),
+            (&CommitmentReference::MSM(a), &CommitmentReference::MSM(b)) => core::ptr::eq(a, b),
             _ => false,
         }
     }

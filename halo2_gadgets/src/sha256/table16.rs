@@ -1,5 +1,5 @@
-use std::convert::TryInto;
-use std::marker::PhantomData;
+use core::convert::TryInto;
+use core::marker::PhantomData;
 
 use super::Sha256Instructions;
 use halo2_proofs::{
@@ -61,7 +61,7 @@ impl<const LEN: usize> Bits<LEN> {
     }
 }
 
-impl<const LEN: usize> std::ops::Deref for Bits<LEN> {
+impl<const LEN: usize> core::ops::Deref for Bits<LEN> {
     type Target = [bool; LEN];
 
     fn deref(&self) -> &Self::Target {
@@ -115,7 +115,7 @@ impl From<u32> for Bits<32> {
 #[derive(Clone, Debug)]
 pub struct AssignedBits<const LEN: usize>(AssignedCell<Bits<LEN>, pallas::Base>);
 
-impl<const LEN: usize> std::ops::Deref for AssignedBits<LEN> {
+impl<const LEN: usize> core::ops::Deref for AssignedBits<LEN> {
     type Target = AssignedCell<Bits<LEN>, pallas::Base>;
 
     fn deref(&self) -> &Self::Target {
@@ -124,7 +124,7 @@ impl<const LEN: usize> std::ops::Deref for AssignedBits<LEN> {
 }
 
 impl<const LEN: usize> AssignedBits<LEN> {
-    fn assign_bits<A, AR, T: TryInto<[bool; LEN]> + std::fmt::Debug + Clone>(
+    fn assign_bits<A, AR, T: TryInto<[bool; LEN]> + core::fmt::Debug + Clone>(
         region: &mut Region<'_, pallas::Base>,
         annotation: A,
         column: impl Into<Column<Any>>,
@@ -134,7 +134,7 @@ impl<const LEN: usize> AssignedBits<LEN> {
     where
         A: Fn() -> AR,
         AR: Into<String>,
-        <T as TryInto<[bool; LEN]>>::Error: std::fmt::Debug,
+        <T as TryInto<[bool; LEN]>>::Error: core::fmt::Debug,
     {
         let value: Value<[bool; LEN]> = value.map(|v| v.try_into().unwrap());
         let value: Value<Bits<LEN>> = value.map(|v| v.into());

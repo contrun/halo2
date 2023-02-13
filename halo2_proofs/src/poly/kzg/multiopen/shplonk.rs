@@ -8,11 +8,12 @@ use crate::{
     arithmetic::{eval_polynomial, lagrange_interpolate, CurveAffine, FieldExt},
     poly::{query::Query, Coeff, Polynomial},
     transcript::ChallengeScalar,
+    vec, Vec,
 };
+use core::marker::PhantomData;
 use rayon::prelude::*;
 use std::{
     collections::{btree_map::Entry, BTreeMap, BTreeSet, HashMap, HashSet},
-    marker::PhantomData,
     sync::Arc,
 };
 
@@ -93,7 +94,7 @@ where
         } else {
             commitment_rotation_set_map.push((
                 query.get_commitment(),
-                BTreeSet::from_iter(std::iter::once(rotation)),
+                BTreeSet::from_iter(core::iter::once(rotation)),
             ));
         };
     }
@@ -159,8 +160,8 @@ mod proptests {
     use crate::poly::Rotation;
     use halo2curves::{pasta::Fp, FieldExt};
 
+    use core::convert::TryFrom;
     use std::collections::BTreeMap;
-    use std::convert::TryFrom;
 
     #[derive(Debug, Clone)]
     struct MyQuery<F> {

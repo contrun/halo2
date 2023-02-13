@@ -6,18 +6,18 @@ pub use verifier::VerifierGWC;
 
 use crate::{
     arithmetic::{eval_polynomial, CurveAffine, FieldExt},
+    format,
     poly::{
         commitment::{Params, ParamsVerifier},
         query::Query,
         Coeff, Polynomial,
     },
     transcript::ChallengeScalar,
+    vec, String, Vec,
 };
 
-use std::{
-    collections::{BTreeMap, BTreeSet},
-    marker::PhantomData,
-};
+use crate::collections::{BTreeMap, BTreeSet};
+use core::marker::PhantomData;
 
 #[derive(Clone, Copy, Debug)]
 struct U {}

@@ -5,16 +5,17 @@ use super::{
 };
 use crate::poly::Error;
 use crate::transcript::{EncodedChallenge, TranscriptRead, TranscriptWrite};
+use core::{
+    fmt::Debug,
+    ops::{Add, AddAssign, Mul, MulAssign},
+};
 use ff::Field;
 use group::Curve;
 use halo2curves::{CurveAffine, CurveExt, FieldExt};
 use rand_core::RngCore;
-use std::{
-    fmt::Debug,
-    ops::{Add, AddAssign, Mul, MulAssign},
-};
 
 use crate::io::{self, Read, Write};
+use crate::{vec, Vec};
 
 /// Defines components of a commitment scheme.
 pub trait CommitmentScheme {

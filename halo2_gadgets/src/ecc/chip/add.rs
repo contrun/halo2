@@ -5,7 +5,7 @@ use halo2_proofs::{
     poly::Rotation,
 };
 use halo2curves::{pasta::pallas, FieldExt};
-use std::collections::HashSet;
+use crate::collections::HashSet;
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct Config {
@@ -352,7 +352,7 @@ pub mod tests {
 
     #[allow(clippy::too_many_arguments)]
     pub fn test_add<
-        EccChip: EccInstructions<pallas::Affine, Point = EccPoint> + Clone + Eq + std::fmt::Debug,
+        EccChip: EccInstructions<pallas::Affine, Point = EccPoint> + Clone + Eq + core::fmt::Debug,
     >(
         chip: EccChip,
         mut layouter: impl Layouter<pallas::Base>,

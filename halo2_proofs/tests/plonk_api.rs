@@ -18,7 +18,7 @@ use halo2_proofs::transcript::{
     TranscriptWriterBuffer,
 };
 use rand_core::{OsRng, RngCore};
-use std::marker::PhantomData;
+use core::marker::PhantomData;
 
 #[test]
 fn plonk_api() {

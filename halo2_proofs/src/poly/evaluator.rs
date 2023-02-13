@@ -648,7 +648,7 @@ impl BasisOps for ExtendedLagrangeCoeff {
 
 #[cfg(test)]
 mod tests {
-    use std::iter;
+    use core::iter;
 
     use halo2curves::pasta::pallas;
 

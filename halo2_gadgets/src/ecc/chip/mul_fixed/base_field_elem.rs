@@ -15,7 +15,7 @@ use halo2_proofs::{
 };
 use halo2curves::{pasta::pallas, FieldExt};
 
-use std::convert::TryInto;
+use core::convert::TryInto;
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct Config<Fixed: FixedPoints<pallas::Affine>> {
@@ -91,7 +91,7 @@ impl<Fixed: FixedPoints<pallas::Affine>> Config<Fixed> {
                 let z_84_alpha_check = z_84_alpha.clone()
                     - (alpha_1.clone() + alpha_2.clone() * pallas::Base::from(1 << 2));
 
-                std::iter::empty()
+                core::iter::empty()
                     .chain(Some(("alpha_1_range_check", alpha_1_range_check)))
                     .chain(Some(("alpha_2_range_check", alpha_2_range_check)))
                     .chain(Some(("z_84_alpha_check", z_84_alpha_check)))
@@ -134,7 +134,7 @@ impl<Fixed: FixedPoints<pallas::Affine>> Config<Fixed> {
                 // a_43 = z_43 - (2^3)z_44
                 let a_43 = z_43_alpha - z_44_alpha * *H_BASE;
 
-                std::iter::empty()
+                core::iter::empty()
                     .chain(Some(("MSB = 1 => alpha_1 = 0", alpha_2.clone() * alpha_1)))
                     .chain(Some((
                         "MSB = 1 => alpha_0_hi_120 = 0",

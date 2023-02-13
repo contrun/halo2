@@ -1,16 +1,18 @@
-use std::{
-    collections::BTreeSet,
-    fmt::{self, Write},
-};
+use crate::collections::BTreeSet;
+
+use core::fmt;
+use core::fmt::Write;
 
 use ff::PrimeField;
 
 use crate::{
     dev::util,
+    format,
     plonk::{
         sealed::{self, SealedPhase},
         Circuit, ConstraintSystem, FirstPhase,
     },
+    vec, String, Vec,
 };
 
 #[derive(Debug)]

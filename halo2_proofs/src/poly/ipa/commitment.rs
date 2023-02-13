@@ -10,11 +10,12 @@ use crate::helpers::CurveRead;
 use crate::poly::commitment::{Blind, CommitmentScheme, Params, ParamsProver, ParamsVerifier, MSM};
 use crate::poly::ipa::msm::MSMIPA;
 use crate::poly::{Coeff, LagrangeCoeff, Polynomial};
+use crate::{vec, Vec};
 
+use core::marker::PhantomData;
+use core::ops::{Add, AddAssign, Mul, MulAssign};
 use ff::{Field, PrimeField};
 use group::{prime::PrimeCurveAffine, Curve, Group as _};
-use std::marker::PhantomData;
-use std::ops::{Add, AddAssign, Mul, MulAssign};
 
 mod prover;
 mod verifier;
@@ -244,10 +245,10 @@ mod test {
     use crate::poly::ipa::msm::MSMIPA;
     use crate::poly::{Coeff, LagrangeCoeff, Polynomial};
 
+    use core::marker::PhantomData;
+    use core::ops::{Add, AddAssign, Mul, MulAssign};
     use ff::{Field, PrimeField};
     use group::{prime::PrimeCurveAffine, Curve, Group as _};
-    use std::marker::PhantomData;
-    use std::ops::{Add, AddAssign, Mul, MulAssign};
 
     use crate::io;
 

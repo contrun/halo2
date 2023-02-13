@@ -24,8 +24,8 @@ use halo2_gadgets::poseidon::{
     primitives::{self as poseidon, ConstantLength, Spec},
     Hash, Pow5Chip, Pow5Config,
 };
-use std::convert::TryInto;
-use std::marker::PhantomData;
+use core::convert::TryInto;
+use core::marker::PhantomData;
 
 use criterion::{criterion_group, criterion_main, Criterion};
 use rand::rngs::OsRng;

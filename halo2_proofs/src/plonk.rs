@@ -21,6 +21,7 @@ use crate::poly::{
 };
 use crate::transcript::{ChallengeScalar, EncodedChallenge, Transcript};
 use crate::SerdeFormat;
+use crate::{format, vec, Vec};
 
 mod assigned;
 mod circuit;

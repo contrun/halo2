@@ -5,12 +5,13 @@ use crate::{
     arithmetic::{best_fft, parallelize, FieldExt, Group},
     plonk::Assigned,
 };
+use crate::{vec, Vec};
 
 use super::{Coeff, ExtendedLagrangeCoeff, LagrangeCoeff, Polynomial, Rotation};
 
 use group::ff::{BatchInvert, Field, PrimeField};
 
-use std::marker::PhantomData;
+use core::marker::PhantomData;
 
 /// This structure contains precomputed constants and other details needed for
 /// performing operations on an evaluation domain of size $2^k$ and an extended

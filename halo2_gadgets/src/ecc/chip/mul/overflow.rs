@@ -12,7 +12,7 @@ use halo2_proofs::{
 
 use halo2curves::{pasta::pallas, FieldExt};
 
-use std::iter;
+use core::iter;
 
 #[derive(Copy, Clone, Debug, Eq, PartialEq)]
 pub struct Config {

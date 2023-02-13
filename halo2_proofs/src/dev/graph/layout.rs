@@ -3,9 +3,9 @@ use plotters::{
     coord::Shift,
     prelude::{DrawingArea, DrawingAreaErrorKind, DrawingBackend},
 };
-use std::cmp;
-use std::collections::HashSet;
-use std::ops::Range;
+use core::cmp;
+use crate::collections::HashSet;
+use core::ops::Range;
 
 use crate::{
     circuit::{layouter::RegionColumn, Value},

@@ -1,4 +1,5 @@
-use std::{io, marker::PhantomData};
+use crate::io;
+use core::marker::PhantomData;
 
 use group::ff::Field;
 use halo2curves::CurveAffine;
@@ -20,6 +21,7 @@ use crate::{
     },
     transcript::{Blake2bRead, TranscriptReadBuffer},
 };
+use crate::{vec, Vec};
 
 /// A proof verification strategy that returns the proof's MSM.
 ///

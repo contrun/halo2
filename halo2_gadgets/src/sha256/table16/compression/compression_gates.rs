@@ -3,7 +3,7 @@ use halo2_proofs::{
     arithmetic::FieldExt,
     plonk::{Constraint, Constraints, Expression},
 };
-use std::marker::PhantomData;
+use core::marker::PhantomData;
 
 pub struct CompressionGate<F: FieldExt>(PhantomData<F>);
 
@@ -290,7 +290,7 @@ impl<F: FieldExt> CompressionGate<F> {
             // evens - spread_e_hi = spread_e_neg_hi
             let hi_check = spread_e_neg_hi.clone() + spread_e_hi + (evens * (-F::one()));
 
-            std::iter::empty()
+            core::iter::empty()
                 .chain(Some(("lo_check", lo_check)))
                 .chain(Some(("hi_check", hi_check)))
         };

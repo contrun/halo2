@@ -158,7 +158,7 @@ pub mod tests {
     use crate::ecc::{EccInstructions, NonIdentityPoint};
 
     pub fn test_witness_non_id<
-        EccChip: EccInstructions<pallas::Affine> + Clone + Eq + std::fmt::Debug,
+        EccChip: EccInstructions<pallas::Affine> + Clone + Eq + core::fmt::Debug,
     >(
         chip: EccChip,
         mut layouter: impl Layouter<pallas::Base>,

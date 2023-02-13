@@ -1,4 +1,4 @@
-use std::iter;
+use core::iter;
 
 use super::super::{
     circuit::Expression, ChallengeBeta, ChallengeGamma, ChallengeTheta, ChallengeX,
@@ -139,7 +139,7 @@ impl<C: CurveAffine> Evaluated<C> {
             (left - &right) * &active_rows
         };
 
-        std::iter::empty()
+        core::iter::empty()
             .chain(
                 // l_0(X) * (1 - z'(X)) = 0
                 Some(l_0 * &(C::Scalar::one() - &self.product_eval)),

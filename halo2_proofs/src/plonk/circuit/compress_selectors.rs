@@ -1,4 +1,5 @@
 use super::Expression;
+use crate::{format, vec, Vec};
 use ff::Field;
 
 /// This describes a selector and where it is activated.
@@ -164,7 +165,7 @@ where
             // Can the new selector join the combination? Reminder: we use
             // selector.max_degree - 1 to omit the influence of the virtual
             // selector on the degree, as it will be substituted.
-            let new_d = std::cmp::max(d, selector.max_degree - 1);
+            let new_d = core::cmp::max(d, selector.max_degree - 1);
             if new_d + combination.len() + 1 > max_degree {
                 // Guess not.
                 continue 'try_selectors;

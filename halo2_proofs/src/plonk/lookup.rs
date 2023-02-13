@@ -1,6 +1,7 @@
 use super::circuit::Expression;
+use crate::{vec, Vec};
+use core::fmt::{self, Debug};
 use ff::Field;
-use std::fmt::{self, Debug};
 
 pub(crate) mod prover;
 pub(crate) mod verifier;
@@ -63,18 +64,18 @@ impl<F: Field> Argument<F> {
         // (1 - (l_last(X) + l_blind(X))) * (a′(X) − s′(X))⋅(a′(X) − a′(\omega^{-1} X)) = 0
         let mut input_degree = 1;
         for expr in self.input_expressions.iter() {
-            input_degree = std::cmp::max(input_degree, expr.degree());
+            input_degree = core::cmp::max(input_degree, expr.degree());
         }
         let mut table_degree = 1;
         for expr in self.table_expressions.iter() {
-            table_degree = std::cmp::max(table_degree, expr.degree());
+            table_degree = core::cmp::max(table_degree, expr.degree());
         }
 
         // In practice because input_degree and table_degree are initialized to
         // one, the latter half of this max() invocation is at least 4 always,
         // rendering this call pointless except to be explicit in case we change
         // the initialization of input_degree/table_degree in the future.
-        std::cmp::max(
+        core::cmp::max(
             // (1 - (l_last + l_blind)) z(\omega X) (a'(X) + \beta) (s'(X) + \gamma)
             4,
             // (1 - (l_last + l_blind)) z(X) (\theta^{m-1} a_0(X) + ... + a_{m-1}(X) + \beta) (\theta^{m-1} s_0(X) + ... + s_{m-1}(X) + \gamma)

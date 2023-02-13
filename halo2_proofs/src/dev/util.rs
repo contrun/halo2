@@ -1,4 +1,5 @@
-use std::collections::BTreeMap;
+use crate::collections::BTreeMap;
+use crate::format;
 
 use group::ff::Field;
 use halo2curves::FieldExt;
@@ -10,6 +11,7 @@ use crate::{
         VirtualCell,
     },
     poly::Rotation,
+    String, Vec,
 };
 
 pub(crate) struct AnyQuery {

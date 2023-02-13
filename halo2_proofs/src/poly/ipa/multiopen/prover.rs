@@ -8,12 +8,13 @@ use crate::poly::ipa::commitment::{self, IPACommitmentScheme, ParamsIPA};
 use crate::poly::query::ProverQuery;
 use crate::poly::{Coeff, Polynomial};
 use crate::transcript::{EncodedChallenge, TranscriptWrite};
+use crate::{vec, Vec};
 
+use crate::io;
+use core::marker::PhantomData;
 use ff::Field;
 use group::Curve;
 use rand_core::RngCore;
-use crate::io;
-use std::marker::PhantomData;
 
 /// IPA multi-open prover
 #[derive(Debug)]

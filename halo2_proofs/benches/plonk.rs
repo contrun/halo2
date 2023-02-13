@@ -22,7 +22,7 @@ use halo2_proofs::{
     transcript::{TranscriptReadBuffer, TranscriptWriterBuffer},
 };
 
-use std::marker::PhantomData;
+use core::marker::PhantomData;
 
 use criterion::{BenchmarkId, Criterion};
 

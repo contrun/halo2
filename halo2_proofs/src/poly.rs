@@ -7,13 +7,14 @@ use crate::helpers::SerdePrimeField;
 use crate::plonk::Assigned;
 use crate::SerdeFormat;
 
+use crate::io;
+use crate::{vec, Vec};
+use core::fmt::Debug;
+use core::marker::PhantomData;
+use core::ops::{Add, Deref, DerefMut, Index, IndexMut, Mul, RangeFrom, RangeFull, Sub};
 use ff::PrimeField;
 use group::ff::{BatchInvert, Field};
 use halo2curves::FieldExt;
-use std::fmt::Debug;
-use crate::io;
-use std::marker::PhantomData;
-use std::ops::{Add, Deref, DerefMut, Index, IndexMut, Mul, RangeFrom, RangeFull, Sub};
 
 /// Generic commitment scheme structures
 pub mod commitment;

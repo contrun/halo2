@@ -13,15 +13,16 @@ use crate::poly::Rotation;
 use crate::poly::{commitment::Params, Coeff, Polynomial};
 use crate::transcript::{EncodedChallenge, TranscriptWrite};
 
+use crate::io::{self, Write};
+use crate::{vec, Vec};
+use core::fmt::Debug;
+use core::marker::PhantomData;
+use core::ops::MulAssign;
 use ff::Field;
 use group::Curve;
 use halo2curves::pairing::Engine;
 use rand_core::RngCore;
 use rayon::prelude::*;
-use std::fmt::Debug;
-use crate::io::{self, Write};
-use std::marker::PhantomData;
-use std::ops::MulAssign;
 
 fn div_by_vanishing<F: FieldExt>(poly: Polynomial<F, Coeff>, roots: &[F]) -> Vec<F> {
     let poly = roots

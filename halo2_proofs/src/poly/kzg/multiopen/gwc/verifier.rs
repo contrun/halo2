@@ -1,6 +1,6 @@
-use std::fmt::Debug;
 use crate::io::Read;
-use std::marker::PhantomData;
+use core::fmt::Debug;
+use core::marker::PhantomData;
 
 use super::{construct_intermediate_sets, ChallengeU, ChallengeV};
 use crate::arithmetic::{eval_polynomial, lagrange_interpolate, powers, CurveAffine, FieldExt};
@@ -18,6 +18,7 @@ use crate::poly::{
     Error,
 };
 use crate::transcript::{EncodedChallenge, TranscriptRead};
+use crate::Vec;
 
 use ff::Field;
 use group::Group;

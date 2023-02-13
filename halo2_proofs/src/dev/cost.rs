@@ -1,7 +1,7 @@
 //! Developer tools for investigating the cost of a circuit.
 
-use std::{
-    collections::{HashMap, HashSet},
+use crate::collections::{HashMap, HashSet};
+use core::{
     iter,
     marker::PhantomData,
     ops::{Add, Mul},
@@ -12,11 +12,13 @@ use group::prime::PrimeGroup;
 
 use crate::{
     circuit::Value,
+    format,
     plonk::{
         Advice, Any, Assigned, Assignment, Challenge, Circuit, Column, ConstraintSystem, Error,
         Fixed, FloorPlanner, Instance, Selector,
     },
     poly::Rotation,
+    vec, String, Vec,
 };
 
 /// Measures a circuit to determine its costs, and explain what contributes to them.

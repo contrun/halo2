@@ -1,11 +1,10 @@
 //! Metadata about circuits.
 
 use super::metadata::Column as ColumnMetadata;
+use crate::collections::HashMap;
 use crate::plonk::{self, Any};
-use std::{
-    collections::HashMap,
-    fmt::{self, Debug},
-};
+use crate::{format, vec, String, Vec};
+use core::fmt::{self, Debug};
 /// Metadata about a column within a circuit.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct Column {

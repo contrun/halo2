@@ -1,5 +1,5 @@
-use std::fmt::Debug;
 use crate::io::Read;
+use core::fmt::Debug;
 
 use super::ChallengeY;
 use super::{construct_intermediate_sets, ChallengeU, ChallengeV};
@@ -22,11 +22,12 @@ use crate::poly::{
     Error,
 };
 use crate::transcript::{EncodedChallenge, TranscriptRead};
+use crate::{vec, Vec};
+use core::ops::MulAssign;
 use ff::Field;
 use group::Group;
 use halo2curves::pairing::{Engine, MillerLoopResult, MultiMillerLoop};
 use rand_core::OsRng;
-use std::ops::MulAssign;
 
 /// Concrete KZG multiopen verifier with SHPLONK variant
 #[derive(Debug)]

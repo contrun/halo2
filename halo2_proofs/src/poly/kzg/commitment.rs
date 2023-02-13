@@ -5,14 +5,15 @@ use crate::helpers::SerdeCurveAffine;
 use crate::poly::commitment::{Blind, CommitmentScheme, Params, ParamsProver, ParamsVerifier, MSM};
 use crate::poly::{Coeff, LagrangeCoeff, Polynomial};
 use crate::SerdeFormat;
+use crate::{format, vec, Vec};
 
+use core::fmt::Debug;
+use core::marker::PhantomData;
+use core::ops::{Add, AddAssign, Mul, MulAssign};
 use ff::{Field, PrimeField};
 use group::{prime::PrimeCurveAffine, Curve, Group as _};
 use halo2curves::pairing::Engine;
 use rand_core::{OsRng, RngCore};
-use std::fmt::Debug;
-use std::marker::PhantomData;
-use std::ops::{Add, AddAssign, Mul, MulAssign};
 
 use crate::io;
 
@@ -354,11 +355,11 @@ mod test {
     use crate::poly::kzg::multiopen::ProverSHPLONK;
     use crate::poly::{Coeff, LagrangeCoeff, Polynomial};
 
+    use core::marker::PhantomData;
     use ff::{Field, PrimeField};
     use group::{prime::PrimeCurveAffine, Curve, Group as _};
     use halo2curves::bn256::G1Affine;
-    use std::marker::PhantomData;
-    use std::ops::{Add, AddAssign, Mul, MulAssign};
+    use core::ops::{Add, AddAssign, Mul, MulAssign};
 
     use crate::io;
 

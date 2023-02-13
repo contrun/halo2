@@ -1,8 +1,9 @@
 //! Implementations of common circuit layouters.
 
-use std::cmp;
-use std::collections::HashSet;
-use std::fmt;
+use crate::collections::HashSet;
+use crate::{format, String};
+use core::cmp;
+use core::fmt;
 
 use ff::Field;
 

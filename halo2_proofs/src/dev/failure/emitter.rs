@@ -1,12 +1,14 @@
-use std::collections::BTreeMap;
-use std::iter;
+use crate::collections::BTreeMap;
+use core::iter;
 
 use group::ff::Field;
 
 use super::FailureLocation;
 use crate::{
     dev::{metadata, util},
+    format, maybe_eprint, maybe_eprintln,
     plonk::{Advice, Any, Expression},
+    vec, String, Vec,
 };
 
 fn padded(p: char, width: usize, text: &str) -> String {
@@ -62,7 +64,7 @@ pub(super) fn render_cell_layout(
             None
         }
     };
-    eprint!("\n{}", col_headers);
+    maybe_eprint!("\n{}", col_headers);
 
     let widths: Vec<usize> = columns
         .iter()
@@ -89,7 +91,7 @@ pub(super) fn render_cell_layout(
 
     // Print the assigned cells, and their region offset or rotation + the column name at which they're assigned to.
     for ((column, _), &width) in columns.iter().zip(widths.iter()) {
-        eprint!(
+        maybe_eprint!(
             "{}|",
             padded(
                 ' ',
@@ -111,20 +113,20 @@ pub(super) fn render_cell_layout(
         );
     }
 
-    eprintln!();
-    eprint!("{}  +--------+", prefix);
+    maybe_eprintln!();
+    maybe_eprint!("{}  +--------+", prefix);
     for &width in widths.iter() {
-        eprint!("{}+", padded('-', width, ""));
+        maybe_eprint!("{}+", padded('-', width, ""));
     }
-    eprintln!();
+    maybe_eprintln!();
     for (rotation, row) in layout {
-        eprint!(
+        maybe_eprint!(
             "{}  |{}|",
             prefix,
             padded(' ', 8, &(offset.unwrap_or(0) + rotation).to_string())
         );
         for ((col, _), &width) in columns.iter().zip(widths.iter()) {
-            eprint!(
+            maybe_eprint!(
                 "{}|",
                 padded(
                     ' ',
@@ -134,7 +136,7 @@ pub(super) fn render_cell_layout(
             );
         }
         highlight_row(offset, *rotation);
-        eprintln!();
+        maybe_eprintln!();
     }
 }
 

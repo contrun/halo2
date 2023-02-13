@@ -1,10 +1,11 @@
-use std::fmt::Debug;
+use core::fmt::Debug;
 
 use super::commitment::{KZGCommitmentScheme, ParamsKZG};
 use crate::{
     arithmetic::{best_multiexp, parallelize, CurveAffine},
     poly::commitment::MSM,
 };
+use crate::{vec, Vec};
 use group::{Curve, Group};
 use halo2curves::pairing::{Engine, MillerLoopResult, MultiMillerLoop};
 

@@ -9,8 +9,8 @@ use halo2_proofs::{
     poly::Rotation,
 };
 use halo2curves::pasta::pallas;
-use std::convert::TryInto;
-use std::ops::Range;
+use core::convert::TryInto;
+use core::ops::Range;
 
 mod compression_gates;
 mod compression_util;

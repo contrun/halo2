@@ -1,5 +1,5 @@
-use std::collections::{BTreeMap, HashSet};
-use std::fmt::{self, Debug};
+use crate::collections::{BTreeMap, HashSet};
+use core::fmt::{self, Debug};
 
 use group::ff::Field;
 use halo2curves::FieldExt;
@@ -14,8 +14,10 @@ use super::{
 use crate::dev::metadata::Constraint;
 use crate::{
     dev::{Instance, Value},
+    format, maybe_eprint, maybe_eprintln,
     plonk::{Any, Column, ConstraintSystem, Expression, Gate},
     poly::Rotation,
+    vec, String, Vec,
 };
 
 mod emitter;
@@ -340,7 +342,7 @@ fn render_cell_not_assigned<F: Field>(
             });
     }
 
-    eprintln!("error: cell not assigned");
+    maybe_eprintln!("error: cell not assigned");
     emitter::render_cell_layout(
         "  ",
         &FailureLocation::InRegion {
@@ -351,14 +353,15 @@ fn render_cell_not_assigned<F: Field>(
         &layout,
         |row_offset, rotation| {
             if (row_offset.unwrap() + rotation) as isize == offset {
-                eprint!(" <--{{ X marks the spot! 🦜");
+                maybe_eprint!(" <--{{ X marks the spot! 🦜");
             }
         },
     );
-    eprintln!();
-    eprintln!(
+    maybe_eprintln!();
+    maybe_eprintln!(
         "  Gate '{}' (applied at offset {}) queries these cells.",
-        gate.name, gate_offset
+        gate.name,
+        gate_offset
     );
 }
 
@@ -400,17 +403,17 @@ fn render_constraint_not_satisfied<F: Field>(
             .or_insert(format!("x{}", i));
     }
 
-    eprintln!("error: constraint not satisfied");
+    maybe_eprintln!("error: constraint not satisfied");
     emitter::render_cell_layout("  ", location, &columns, &layout, |_, rotation| {
         if rotation == 0 {
-            eprint!(" <--{{ Gate '{}' applied here", constraint.gate.name);
+            maybe_eprint!(" <--{{ Gate '{}' applied here", constraint.gate.name);
         }
     });
 
     // Print the unsatisfied constraint, in terms of the local variables.
-    eprintln!();
-    eprintln!("  Constraint '{}':", constraint.name);
-    eprintln!(
+    maybe_eprintln!();
+    maybe_eprintln!("  Constraint '{}':", constraint.name);
+    maybe_eprintln!(
         "    {} = 0",
         emitter::expression_to_string(
             &gates[constraint.gate.index].polynomials()[constraint.index],
@@ -419,10 +422,10 @@ fn render_constraint_not_satisfied<F: Field>(
     );
 
     // Print the map from local variables to assigned values.
-    eprintln!();
-    eprintln!("  Assigned cell values:");
+    maybe_eprintln!();
+    maybe_eprintln!("  Assigned cell values:");
     for (i, (_, value)) in cell_values.iter().enumerate() {
-        eprintln!("    x{} = {}", i, value);
+        maybe_eprintln!("    x{} = {}", i, value);
     }
 }
 
@@ -532,20 +535,20 @@ fn render_lookup<F: FieldExt>(
         }
     }
 
-    eprintln!("error: lookup input does not exist in table");
-    eprint!("  (");
+    maybe_eprintln!("error: lookup input does not exist in table");
+    maybe_eprint!("  (");
     for i in 0..lookup.input_expressions.len() {
-        eprint!("{}L{}", if i == 0 { "" } else { ", " }, i);
+        maybe_eprint!("{}L{}", if i == 0 { "" } else { ", " }, i);
     }
 
-    eprint!(") ∉ (");
+    maybe_eprint!(") ∉ (");
     for (i, column) in lookup_columns.enumerate() {
-        eprint!("{}{}", if i == 0 { "" } else { ", " }, column);
+        maybe_eprint!("{}{}", if i == 0 { "" } else { ", " }, column);
     }
-    eprintln!(")");
+    maybe_eprintln!(")");
 
-    eprintln!();
-    eprintln!("  Lookup '{}' inputs:", name);
+    maybe_eprintln!();
+    maybe_eprintln!("  Lookup '{}' inputs:", name);
     for (i, input) in lookup.input_expressions.iter().enumerate() {
         // Fetch the cell values (since we don't store them in VerifyFailure::Lookup).
         let cell_values = input.evaluate(
@@ -588,26 +591,26 @@ fn render_lookup<F: FieldExt>(
         }
 
         if i != 0 {
-            eprintln!();
+            maybe_eprintln!();
         }
-        eprintln!(
+        maybe_eprintln!(
             "    L{} = {}",
             i,
             emitter::expression_to_string(input, &layout)
         );
-        eprintln!("    ^");
+        maybe_eprintln!("    ^");
 
         emitter::render_cell_layout("    | ", location, &columns, &layout, |_, rotation| {
             if rotation == 0 {
-                eprint!(" <--{{ Lookup '{}' inputs queried here", name);
+                maybe_eprint!(" <--{{ Lookup '{}' inputs queried here", name);
             }
         });
 
         // Print the map from local variables to assigned values.
-        eprintln!("    |");
-        eprintln!("    | Assigned cell values:");
+        maybe_eprintln!("    |");
+        maybe_eprintln!("    | Assigned cell values:");
         for (i, (_, value)) in cell_values.iter().enumerate() {
-            eprintln!("    |   x{} = {}", i, value);
+            maybe_eprintln!("    |   x{} = {}", i, value);
         }
     }
 }
@@ -642,7 +645,7 @@ impl VerifyFailure {
                 lookup_index,
                 location,
             } => render_lookup(prover, name, *lookup_index, location),
-            _ => eprintln!("{}", self),
+            _ => maybe_eprintln!("{}", self),
         }
     }
 }

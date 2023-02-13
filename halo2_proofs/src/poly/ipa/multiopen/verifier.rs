@@ -1,6 +1,6 @@
-use std::fmt::Debug;
 use crate::io::Read;
-use std::marker::PhantomData;
+use core::fmt::Debug;
+use core::marker::PhantomData;
 
 use ff::Field;
 use rand_core::RngCore;
@@ -17,6 +17,7 @@ use crate::poly::query::{CommitmentReference, VerifierQuery};
 use crate::poly::strategy::VerificationStrategy;
 use crate::poly::Error;
 use crate::transcript::{EncodedChallenge, TranscriptRead};
+use crate::{vec, Vec};
 
 /// IPA multi-open verifier
 #[derive(Debug)]

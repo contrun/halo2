@@ -3,13 +3,14 @@
 //!
 //! [halo]: https://eprint.iacr.org/2019/1021
 
-use std::collections::{BTreeMap, BTreeSet};
+use crate::collections::{BTreeMap, BTreeSet};
 
 use super::*;
 use crate::{
     arithmetic::{CurveAffine, FieldExt},
     poly::query::Query,
     transcript::ChallengeScalar,
+    vec, Vec,
 };
 
 mod prover;

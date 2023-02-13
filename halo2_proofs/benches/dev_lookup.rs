@@ -8,7 +8,7 @@ use halo2_proofs::plonk::*;
 use halo2_proofs::poly::Rotation;
 use halo2curves::pasta::pallas;
 
-use std::marker::PhantomData;
+use core::marker::PhantomData;
 
 use criterion::{BenchmarkId, Criterion};
 

@@ -1,11 +1,11 @@
+use crate::collections::HashMap;
 use core::cmp::max;
 use core::ops::{Add, Mul};
-use ff::Field;
-use std::collections::HashMap;
-use std::{
+use core::{
     convert::TryFrom,
     ops::{Neg, Sub},
 };
+use ff::Field;
 
 use super::{lookup, permutation, Assigned, Error};
 use crate::dev::metadata;
@@ -13,13 +13,16 @@ use crate::{
     circuit::{Layouter, Region, Value},
     poly::Rotation,
 };
+use crate::{format, String};
+use crate::{vec, Vec};
+use alloc::boxed::Box;
 use sealed::SealedPhase;
 
 mod compress_selectors;
 
 /// A column type
 pub trait ColumnType:
-    'static + Sized + Copy + std::fmt::Debug + PartialEq + Eq + Into<Any>
+    'static + Sized + Copy + core::fmt::Debug + PartialEq + Eq + Into<Any>
 {
 }
 
@@ -48,19 +51,19 @@ impl<C: ColumnType> Column<C> {
 }
 
 impl<C: ColumnType> Ord for Column<C> {
-    fn cmp(&self, other: &Self) -> std::cmp::Ordering {
+    fn cmp(&self, other: &Self) -> core::cmp::Ordering {
         // This ordering is consensus-critical! The layouters rely on deterministic column
         // orderings.
         match self.column_type.into().cmp(&other.column_type.into()) {
             // Indices are assigned within column types.
-            std::cmp::Ordering::Equal => self.index.cmp(&other.index),
+            core::cmp::Ordering::Equal => self.index.cmp(&other.index),
             order => order,
         }
     }
 }
 
 impl<C: ColumnType> PartialOrd for Column<C> {
-    fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
+    fn partial_cmp(&self, other: &Self) -> Option<core::cmp::Ordering> {
         Some(self.cmp(other))
     }
 }
@@ -145,8 +148,8 @@ impl Advice {
     }
 }
 
-impl std::fmt::Debug for Advice {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+impl core::fmt::Debug for Advice {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         let mut debug_struct = f.debug_struct("Advice");
         // Only show advice's phase if it's not in first phase.
         if self.phase != FirstPhase.to_sealed() {
@@ -187,8 +190,8 @@ impl Any {
     }
 }
 
-impl std::fmt::Debug for Any {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+impl core::fmt::Debug for Any {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         match self {
             Any::Advice(advice) => {
                 let mut debug_struct = f.debug_struct("Advice");
@@ -205,25 +208,25 @@ impl std::fmt::Debug for Any {
 }
 
 impl Ord for Any {
-    fn cmp(&self, other: &Self) -> std::cmp::Ordering {
+    fn cmp(&self, other: &Self) -> core::cmp::Ordering {
         // This ordering is consensus-critical! The layouters rely on deterministic column
         // orderings.
         match (self, other) {
-            (Any::Instance, Any::Instance) | (Any::Fixed, Any::Fixed) => std::cmp::Ordering::Equal,
+            (Any::Instance, Any::Instance) | (Any::Fixed, Any::Fixed) => core::cmp::Ordering::Equal,
             (Any::Advice(lhs), Any::Advice(rhs)) => lhs.phase.cmp(&rhs.phase),
             // Across column types, sort Instance < Advice < Fixed.
             (Any::Instance, Any::Advice(_))
             | (Any::Advice(_), Any::Fixed)
-            | (Any::Instance, Any::Fixed) => std::cmp::Ordering::Less,
+            | (Any::Instance, Any::Fixed) => core::cmp::Ordering::Less,
             (Any::Fixed, Any::Instance)
             | (Any::Fixed, Any::Advice(_))
-            | (Any::Advice(_), Any::Instance) => std::cmp::Ordering::Greater,
+            | (Any::Advice(_), Any::Instance) => core::cmp::Ordering::Greater,
         }
     }
 }
 
 impl PartialOrd for Any {
-    fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
+    fn partial_cmp(&self, other: &Self) -> Option<core::cmp::Ordering> {
         Some(self.cmp(other))
     }
 }
@@ -1092,8 +1095,8 @@ impl<F: Field> Expression<F> {
     }
 }
 
-impl<F: std::fmt::Debug> std::fmt::Debug for Expression<F> {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+impl<F: core::fmt::Debug> core::fmt::Debug for Expression<F> {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         match self {
             Expression::Constant(scalar) => f.debug_tuple("Constant").field(scalar).finish(),
             Expression::Selector(selector) => f.debug_tuple("Selector").field(selector).finish(),
@@ -1306,8 +1309,8 @@ fn apply_selector_to_constraint<F: Field, C: Into<Constraint<F>>>(
 }
 
 type ApplySelectorToConstraint<F, C> = fn((Expression<F>, C)) -> Constraint<F>;
-type ConstraintsIterator<F, C, I> = std::iter::Map<
-    std::iter::Zip<std::iter::Repeat<Expression<F>>, I>,
+type ConstraintsIterator<F, C, I> = core::iter::Map<
+    core::iter::Zip<core::iter::Repeat<Expression<F>>, I>,
     ApplySelectorToConstraint<F, C>,
 >;
 
@@ -1318,7 +1321,7 @@ impl<F: Field, C: Into<Constraint<F>>, Iter: IntoIterator<Item = C>> IntoIterato
     type IntoIter = ConstraintsIterator<F, C, Iter::IntoIter>;
 
     fn into_iter(self) -> Self::IntoIter {
-        std::iter::repeat(self.selector)
+        core::iter::repeat(self.selector)
             .zip(self.constraints.into_iter())
             .map(apply_selector_to_constraint)
     }
@@ -1424,8 +1427,8 @@ pub struct PinnedConstraintSystem<'a, F: Field> {
     minimum_degree: &'a Option<usize>,
 }
 
-impl<'a, F: Field> std::fmt::Debug for PinnedConstraintSystem<'a, F> {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+impl<'a, F: Field> core::fmt::Debug for PinnedConstraintSystem<'a, F> {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         let mut debug_struct = f.debug_struct("PinnedConstraintSystem");
         debug_struct
             .field("num_fixed_columns", self.num_fixed_columns)
@@ -1454,8 +1457,8 @@ impl<'a, F: Field> std::fmt::Debug for PinnedConstraintSystem<'a, F> {
 
 struct PinnedGates<'a, F: Field>(&'a Vec<Gate<F>>);
 
-impl<'a, F: Field> std::fmt::Debug for PinnedGates<'a, F> {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+impl<'a, F: Field> core::fmt::Debug for PinnedGates<'a, F> {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> Result<(), core::fmt::Error> {
         f.debug_list()
             .entries(self.0.iter().flat_map(|gate| gate.polynomials().iter()))
             .finish()
@@ -1998,7 +2001,7 @@ impl<F: Field> ConstraintSystem<F> {
 
         // The lookup argument also serves alongside the gates and must be accounted
         // for.
-        degree = std::cmp::max(
+        degree = core::cmp::max(
             degree,
             self.lookups
                 .iter()
@@ -2009,7 +2012,7 @@ impl<F: Field> ConstraintSystem<F> {
 
         // Account for each gate to ensure our quotient polynomial is the
         // correct degree and that our extended domain is the right size.
-        degree = std::cmp::max(
+        degree = core::cmp::max(
             degree,
             self.gates
                 .iter()
@@ -2018,7 +2021,7 @@ impl<F: Field> ConstraintSystem<F> {
                 .unwrap_or(0),
         );
 
-        std::cmp::max(degree, self.minimum_degree.unwrap_or(1))
+        core::cmp::max(degree, self.minimum_degree.unwrap_or(1))
     }
 
     /// Compute the number of blinding factors necessary to perfectly blind
@@ -2031,7 +2034,7 @@ impl<F: Field> ConstraintSystem<F> {
         // - The permutation argument witness polynomials are evaluated at most 3 times.
         // - Each lookup argument has independent witness polynomials, and they are
         //   evaluated at most 2 times.
-        let factors = std::cmp::max(3, factors);
+        let factors = core::cmp::max(3, factors);
 
         // Each polynomial is evaluated at most an additional time during
         // multiopen (at x_3 to produce q_evals):

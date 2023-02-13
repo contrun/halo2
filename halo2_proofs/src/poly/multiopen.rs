@@ -156,8 +156,8 @@ mod tests {
     use ff::Field;
     use rand::RngCore;
     use rand_core::OsRng;
-    use std::collections::BTreeSet;
-    use std::marker::PhantomData;
+    use crate::collections::BTreeSet;
+    use core::marker::PhantomData;
 
     fn rand_poly(n: usize, mut rng: impl RngCore) -> Polynomial<Fr, Coeff> {
         Polynomial {
@@ -218,7 +218,7 @@ mod tests {
         create_proof(
             &params,
             &mut transcript,
-            std::iter::empty()
+            core::iter::empty()
                 .chain(Some(ProverQuery {
                     point: x,
                     rotation: cur,
@@ -246,7 +246,7 @@ mod tests {
             let pair = verify_proof(
                 &params_verifier,
                 &mut transcript,
-                std::iter::empty()
+                core::iter::empty()
                     .chain(Some(VerifierQuery::new_commitment(&a, x, cur, avx)))
                     .chain(Some(VerifierQuery::new_commitment(&b, x, cur, avx))) // NB: wrong!
                     .chain(Some(VerifierQuery::new_commitment(&c, y, next, cvy))),
@@ -266,7 +266,7 @@ mod tests {
             let guard = verify_proof(
                 &params_verifier,
                 &mut transcript,
-                std::iter::empty()
+                core::iter::empty()
                     .chain(Some(VerifierQuery::new_commitment(&a, x, cur, avx)))
                     .chain(Some(VerifierQuery::new_commitment(&b, x, cur, bvx)))
                     .chain(Some(VerifierQuery::new_commitment(&c, y, next, cvy))),

@@ -1,10 +1,10 @@
 //! Tools for developing circuits.
 
-use std::collections::HashMap;
-use std::collections::HashSet;
-use std::fmt;
-use std::iter;
-use std::ops::{Add, Mul, Neg, Range};
+use crate::collections::HashMap;
+use crate::collections::HashSet;
+use core::fmt;
+use core::iter;
+use core::ops::{Add, Mul, Neg, Range};
 use std::time::{Duration, Instant};
 
 use blake2b_simd::blake2b;
@@ -16,13 +16,14 @@ use crate::plonk::FirstPhase;
 use crate::plonk::ThirdPhase;
 use crate::{
     arithmetic::{FieldExt, Group},
-    circuit,
+    circuit, format,
     plonk::{
         permutation, Advice, Any, Assigned, Assignment, Challenge, Circuit, Column, ColumnType,
         ConstraintSystem, Error, Expression, Fixed, FloorPlanner, Instance, Phase, Selector,
         VirtualCell,
     },
     poly::Rotation,
+    vec, String, Vec,
 };
 use rayon::{
     iter::{
@@ -1420,7 +1421,7 @@ impl<F: FieldExt> MockProver<F> {
         if let Err(errs) = self.verify() {
             for err in errs {
                 err.emit(self);
-                eprintln!();
+                maybe_eprintln!();
             }
             panic!("circuit was not satisfied");
         }
@@ -1441,7 +1442,7 @@ impl<F: FieldExt> MockProver<F> {
         if let Err(errs) = self.verify_par() {
             for err in errs {
                 err.emit(self);
-                eprintln!();
+                maybe_eprintln!();
             }
             panic!("circuit was not satisfied");
         }
@@ -1466,7 +1467,7 @@ impl<F: FieldExt> MockProver<F> {
         if let Err(errs) = self.verify_at_rows_par(gate_row_ids, lookup_input_row_ids) {
             for err in errs {
                 err.emit(self);
-                eprintln!();
+                maybe_eprintln!();
             }
             panic!("circuit was not satisfied");
         }

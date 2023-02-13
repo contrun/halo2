@@ -6,8 +6,8 @@ use group::ff::PrimeField;
 use halo2curves::{Coordinates, CurveAffine, FieldExt};
 use num_bigint::BigUint;
 use poseidon::Poseidon;
-use std::convert::TryInto;
-use std::marker::PhantomData;
+use core::convert::TryInto;
+use core::marker::PhantomData;
 
 const POSEIDON_RATE: usize = 8usize;
 const POSEIDON_T: usize = POSEIDON_RATE + 1usize;

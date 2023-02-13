@@ -13,7 +13,7 @@ use halo2_proofs::{
 use group::ff::{PrimeField, PrimeFieldBits};
 use halo2curves::{pasta::pallas, CurveAffine, FieldExt};
 
-use std::ops::Deref;
+use core::ops::Deref;
 
 impl<Hash, Commit, Fixed> SinsemillaChip<Hash, Commit, Fixed>
 where

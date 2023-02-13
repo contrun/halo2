@@ -1,9 +1,10 @@
-use std::borrow::Borrow;
-use std::ops::{Add, Mul, Neg, Sub};
+use core::borrow::Borrow;
+use core::ops::{Add, Mul, Neg, Sub};
 
 use group::ff::Field;
 
 use crate::plonk::{Assigned, Error};
+use crate::{vec, Vec};
 
 /// A value that might exist within a circuit.
 ///

@@ -1,6 +1,6 @@
 //! Elliptic curve operations.
 
-use std::fmt::Debug;
+use core::fmt::Debug;
 
 use halo2_proofs::{
     arithmetic::CurveAffine,

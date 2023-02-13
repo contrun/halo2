@@ -3,6 +3,7 @@ use super::super::{
     ProvingKey,
 };
 use super::Argument;
+use crate::collections::BTreeMap;
 use crate::plonk::evaluation::evaluate;
 use crate::{
     arithmetic::{eval_polynomial, parallelize, CurveAffine, FieldExt},
@@ -13,17 +14,19 @@ use crate::{
     },
     transcript::{EncodedChallenge, TranscriptWrite},
 };
+use crate::{format, String};
+use crate::{vec, Vec};
+use core::{convert::TryInto, num::ParseIntError, ops::Index};
+use core::{
+    iter,
+    ops::{Mul, MulAssign},
+};
 use group::{
     ff::{BatchInvert, Field},
     Curve,
 };
 use rand_core::RngCore;
-use std::{any::TypeId, convert::TryInto, num::ParseIntError, ops::Index};
-use std::{
-    collections::BTreeMap,
-    iter,
-    ops::{Mul, MulAssign},
-};
+use std::any::TypeId;
 
 #[derive(Debug)]
 pub(in crate::plonk) struct Permuted<C: CurveAffine> {

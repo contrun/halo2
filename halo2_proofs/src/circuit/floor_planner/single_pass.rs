@@ -1,7 +1,7 @@
-use std::cmp;
-use std::collections::HashMap;
-use std::fmt;
-use std::marker::PhantomData;
+use crate::collections::HashMap;
+use core::cmp;
+use core::fmt;
+use core::marker::PhantomData;
 
 use ff::Field;
 
@@ -12,10 +12,12 @@ use crate::{
         layouter::{RegionColumn, RegionLayouter, RegionShape, TableLayouter},
         Cell, Layouter, Region, RegionIndex, RegionStart, Table, Value,
     },
+    format,
     plonk::{
         Advice, Any, Assigned, Assignment, Challenge, Circuit, Column, Error, Fixed, FloorPlanner,
         Instance, Selector, TableColumn,
     },
+    vec, String, Vec,
 };
 
 /// A simple [`FloorPlanner`] that performs minimal optimizations.

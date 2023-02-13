@@ -1,6 +1,6 @@
 //! Traits and structs for implementing circuit components.
 
-use std::{convert::TryInto, fmt, marker::PhantomData};
+use core::{convert::TryInto, fmt, marker::PhantomData};
 
 use ff::Field;
 
@@ -9,6 +9,7 @@ use crate::{
     plonk::{
         Advice, Any, Assigned, Challenge, Column, Error, Fixed, Instance, Selector, TableColumn,
     },
+    vec, String, Vec,
 };
 
 mod value;
@@ -60,7 +61,7 @@ impl From<usize> for RegionIndex {
     }
 }
 
-impl std::ops::Deref for RegionIndex {
+impl core::ops::Deref for RegionIndex {
     type Target = usize;
 
     fn deref(&self) -> &Self::Target {
@@ -78,7 +79,7 @@ impl From<usize> for RegionStart {
     }
 }
 
-impl std::ops::Deref for RegionStart {
+impl core::ops::Deref for RegionStart {
     type Target = usize;
 
     fn deref(&self) -> &Self::Target {

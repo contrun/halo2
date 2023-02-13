@@ -1,4 +1,4 @@
-use std::iter;
+use core::iter;
 
 use ff::Field;
 use group::Curve;
@@ -14,6 +14,7 @@ use crate::{
         Coeff, EvaluationDomain, ExtendedLagrangeCoeff, Polynomial, ProverQuery,
     },
     transcript::{EncodedChallenge, TranscriptWrite},
+    vec, Vec,
 };
 
 pub(in crate::plonk) struct Committed<C: CurveAffine> {

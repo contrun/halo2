@@ -2,9 +2,9 @@
 //!
 //! [SHA-256]: https://tools.ietf.org/html/rfc6234
 
-use std::cmp::min;
-use std::convert::TryInto;
-use std::fmt;
+use core::cmp::min;
+use core::convert::TryInto;
+use core::fmt;
 
 use halo2_proofs::{
     arithmetic::FieldExt,

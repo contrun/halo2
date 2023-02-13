@@ -1,9 +1,9 @@
+use core::iter::{self, ExactSizeIterator};
 use group::{
     ff::{BatchInvert, Field},
     Curve,
 };
 use rand_core::RngCore;
-use std::iter::{self, ExactSizeIterator};
 
 use super::super::{circuit::Any, ChallengeBeta, ChallengeGamma, ChallengeX};
 use super::{Argument, ProvingKey};
@@ -16,6 +16,7 @@ use crate::{
         Coeff, ExtendedLagrangeCoeff, LagrangeCoeff, Polynomial, ProverQuery, Rotation,
     },
     transcript::{EncodedChallenge, TranscriptWrite},
+    vec, Vec,
 };
 
 pub(crate) struct CommittedSet<C: CurveAffine> {

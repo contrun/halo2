@@ -15,6 +15,7 @@ use crate::{
     poly::{commitment::MSM, ipa::msm::MSMIPA, strategy::Guard, Error},
     transcript::{EncodedChallenge, TranscriptRead},
 };
+use crate::{vec, Vec};
 
 /// Checks to see if the proof represented within `transcript` is valid, and a
 /// point `x` that the polynomial commitment `P` opens purportedly to the value

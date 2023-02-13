@@ -134,7 +134,7 @@ All APIs that represented witnessed values as `Option<V>` now represent them as
     take `Into<Column<Any>>` instead of `Column<Any>` as a parameter to avoid
     excesive `.into()` usage.
   - `Error` has been overhauled:
-    - `Error` now implements `std::fmt::Display` and `std::error::Error`.
+    - `Error` now implements `core::fmt::Display` and `std::error::Error`.
     - `Error` no longer implements `PartialEq`. Tests can check for specific
       error cases with `assert!(matches!(..))`, or the `assert_matches` crate.
     - `Error::IncompatibleParams` is now `Error::InvalidInstances`.

@@ -1,4 +1,4 @@
-use std::iter;
+use core::iter;
 
 use ff::Field;
 
@@ -10,6 +10,7 @@ use crate::{
         VerifierQuery,
     },
     transcript::{read_n_points, EncodedChallenge, TranscriptRead},
+    vec, Vec,
 };
 
 use super::super::{ChallengeX, ChallengeY};

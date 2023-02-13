@@ -1,6 +1,6 @@
 //! # halo2_proofs
-
 #![cfg_attr(docsrs, feature(doc_cfg))]
+#![cfg_attr(not(test), no_std)]
 // Build without warnings on stable 1.51 and later.
 #![allow(unknown_lints)]
 // Disable old lint warnings until our MSRV is at least 1.51.
@@ -23,6 +23,21 @@
 // Remove this once we update pasta_curves
 #![allow(unused_imports)]
 #![allow(clippy::derive_partial_eq_without_eq)]
+
+#[macro_export]
+macro_rules! maybe_eprintln {
+    ( $( $x:expr ),* ) => {{}};
+}
+
+#[macro_export]
+macro_rules! maybe_eprint {
+    ( $( $x:expr ),* ) => {{}};
+}
+
+extern crate alloc;
+use alloc::{format, string::String, vec, vec::Vec};
+
+use hashbrown as collections;
 
 pub mod arithmetic;
 pub mod circuit;

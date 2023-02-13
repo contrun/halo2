@@ -1,13 +1,15 @@
+use crate::collections::BTreeSet;
+use crate::collections::HashMap;
+use core::ops::RangeTo;
+use core::{iter, mem};
 use ff::Field;
 use group::Curve;
 use halo2curves::CurveExt;
 use rand_core::RngCore;
-use std::collections::BTreeSet;
 use std::env::var;
-use std::ops::RangeTo;
 use std::sync::atomic::AtomicUsize;
+use std::sync::atomic::Ordering;
 use std::time::Instant;
-use std::{collections::HashMap, iter, mem, sync::atomic::Ordering};
 
 use super::{
     circuit::{
@@ -27,6 +29,7 @@ use crate::{
         commitment::{Blind, CommitmentScheme, Params, Prover},
         Basis, Coeff, ExtendedLagrangeCoeff, LagrangeCoeff, Polynomial, ProverQuery,
     },
+    vec, String, Vec,
 };
 use crate::{
     poly::batch_invert_assigned,
@@ -144,7 +147,7 @@ pub fn create_proof<
         challenges: &'a HashMap<usize, F>,
         instances: &'a [&'a [F]],
         usable_rows: RangeTo<usize>,
-        _marker: std::marker::PhantomData<F>,
+        _marker: core::marker::PhantomData<F>,
     }
 
     impl<'a, F: Field> Assignment<F> for WitnessCollection<'a, F> {
@@ -326,7 +329,7 @@ pub fn create_proof<
                     // number of blinding factors and an extra row for use in the
                     // permutation argument.
                     usable_rows: ..unusable_rows_start,
-                    _marker: std::marker::PhantomData,
+                    _marker: core::marker::PhantomData,
                 };
 
                 // Synthesize the circuit to obtain the witness and other information.

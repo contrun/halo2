@@ -1,7 +1,7 @@
+use core::iter;
 use ff::Field;
 use group::Curve;
 use rand_core::RngCore;
-use std::iter;
 
 use super::{
     vanishing, ChallengeBeta, ChallengeGamma, ChallengeTheta, ChallengeX, ChallengeY, Error,
@@ -15,6 +15,7 @@ use crate::poly::{
     Guard, VerifierQuery,
 };
 use crate::transcript::{read_n_points, read_n_scalars, EncodedChallenge, TranscriptRead};
+use crate::{vec, Vec};
 
 #[cfg(feature = "batch")]
 mod batch;
@@ -265,7 +266,7 @@ pub fn verify_proof<
             .flat_map(|(((advice_evals, instance_evals), permutation), lookups)| {
                 let challenges = &challenges;
                 let fixed_evals = &fixed_evals;
-                std::iter::empty()
+                core::iter::empty()
                     // Evaluate the circuit using the custom gates provided
                     .chain(vk.cs.gates.iter().flat_map(move |gate| {
                         gate.polynomials().iter().map(move |poly| {

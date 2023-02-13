@@ -1,4 +1,4 @@
-use std::collections::HashSet;
+use crate::collections::HashSet;
 
 use super::NonIdentityEccPoint;
 use halo2_proofs::{
@@ -158,7 +158,7 @@ pub mod tests {
 
     #[allow(clippy::too_many_arguments)]
     pub fn test_add_incomplete<
-        EccChip: EccInstructions<pallas::Affine> + Clone + Eq + std::fmt::Debug,
+        EccChip: EccInstructions<pallas::Affine> + Clone + Eq + core::fmt::Debug,
     >(
         chip: EccChip,
         mut layouter: impl Layouter<pallas::Base>,

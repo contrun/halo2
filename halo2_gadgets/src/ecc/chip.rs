@@ -15,7 +15,7 @@ use halo2_proofs::{
 };
 use halo2curves::{pasta::pallas, CurveAffine};
 
-use std::convert::TryInto;
+use core::convert::TryInto;
 
 pub(super) mod add;
 pub(super) mod add_incomplete;
@@ -207,7 +207,7 @@ impl FixedScalarKind for BaseFieldElem {
 /// TODO: When associated consts can be used as const generics, introduce a
 /// `const NUM_WINDOWS: usize` associated const, and return `NUM_WINDOWS`-sized
 /// arrays instead of `Vec`s.
-pub trait FixedPoint<C: CurveAffine>: std::fmt::Debug + Eq + Clone {
+pub trait FixedPoint<C: CurveAffine>: core::fmt::Debug + Eq + Clone {
     /// The kind of scalar that this fixed point can be multiplied by.
     type FixedScalarKind: FixedScalarKind;
 

@@ -195,12 +195,12 @@ mod test {
         let bvx = transcript.read_scalar().unwrap();
         let cvy = transcript.read_scalar().unwrap();
 
-        let valid_queries = std::iter::empty()
+        let valid_queries = core::iter::empty()
             .chain(Some(VerifierQuery::new_commitment(&a, x.get_scalar(), avx)))
             .chain(Some(VerifierQuery::new_commitment(&b, x.get_scalar(), bvx)))
             .chain(Some(VerifierQuery::new_commitment(&c, y.get_scalar(), cvy)));
 
-        let invalid_queries = std::iter::empty()
+        let invalid_queries = core::iter::empty()
             .chain(Some(VerifierQuery::new_commitment(&a, x.get_scalar(), avx)))
             .chain(Some(VerifierQuery::new_commitment(&b, x.get_scalar(), avx)))
             .chain(Some(VerifierQuery::new_commitment(&c, y.get_scalar(), cvy)));

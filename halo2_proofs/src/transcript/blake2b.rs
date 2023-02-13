@@ -7,9 +7,9 @@ use ff::Field;
 use group::ff::PrimeField;
 use halo2curves::{Coordinates, CurveAffine, FieldExt};
 use num_bigint::BigUint;
-use std::convert::TryInto;
+use core::convert::TryInto;
 use crate::io::{self, Read, Write};
-use std::marker::PhantomData;
+use core::marker::PhantomData;
 
 /// Prefix to a prover's message soliciting a challenge
 const BLAKE2B_PREFIX_CHALLENGE: u8 = 0;

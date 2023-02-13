@@ -7,7 +7,7 @@ use halo2_proofs::{
     poly::Rotation,
 };
 use halo2curves::FieldExt;
-use std::marker::PhantomData;
+use core::marker::PhantomData;
 
 /// Instructions for a conditional swap gadget.
 pub trait CondSwapInstructions<F: FieldExt>: UtilitiesInstructions<F> {

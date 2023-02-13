@@ -8,6 +8,7 @@ use crate::{
     poly::{Coeff, ExtendedLagrangeCoeff, LagrangeCoeff, Polynomial},
     SerdeFormat,
 };
+use crate::{vec, Vec};
 use ff::PrimeField;
 
 pub(crate) mod keygen;

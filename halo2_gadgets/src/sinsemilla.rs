@@ -11,7 +11,7 @@ use halo2_proofs::{
     plonk::Error,
 };
 use halo2curves::CurveAffine;
-use std::fmt::Debug;
+use core::fmt::Debug;
 
 pub mod chip;
 pub mod merkle;
@@ -481,7 +481,7 @@ pub(crate) mod tests {
     use halo2curves::pasta::pallas;
     use lazy_static::lazy_static;
 
-    use std::convert::TryInto;
+    use core::convert::TryInto;
 
     pub(crate) const PERSONALIZATION: &str = "MerkleCRH";
 

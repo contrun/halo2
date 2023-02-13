@@ -5,7 +5,7 @@ use halo2_proofs::{
     plonk::Error,
 };
 use halo2curves::pasta::pallas;
-use std::convert::TryInto;
+use core::convert::TryInto;
 
 // A word in subregion 1
 // (3, 4, 11, 14)-bit chunks
@@ -47,7 +47,7 @@ impl Subregion1Word {
                     .iter()
                     .chain(c.iter())
                     .chain(d.iter())
-                    .chain(std::iter::repeat(&false).take(6))
+                    .chain(core::iter::repeat(&false).take(6))
                     .copied()
                     .collect::<Vec<_>>();
                 let xor_1 = c

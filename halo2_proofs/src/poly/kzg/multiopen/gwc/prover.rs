@@ -12,13 +12,13 @@ use crate::poly::{
 };
 use crate::transcript::{EncodedChallenge, TranscriptWrite};
 
+use crate::io::{self, Write};
+use core::fmt::Debug;
+use core::marker::PhantomData;
 use ff::Field;
 use group::Curve;
 use halo2curves::pairing::Engine;
 use rand_core::RngCore;
-use std::fmt::Debug;
-use crate::io::{self, Write};
-use std::marker::PhantomData;
 
 /// Concrete KZG prover with GWC variant
 #[derive(Debug)]

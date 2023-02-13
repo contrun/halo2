@@ -1,5 +1,5 @@
+use core::iter;
 use ff::Field;
-use std::iter;
 
 use super::super::{circuit::Any, ChallengeBeta, ChallengeGamma, ChallengeX};
 use super::{Argument, VerifyingKey};
@@ -9,6 +9,7 @@ use crate::{
     poly::{commitment::MSM, Rotation, VerifierQuery},
     transcript::{EncodedChallenge, TranscriptRead},
 };
+use crate::{vec, Vec};
 
 #[derive(Debug)]
 pub struct Committed<C: CurveAffine> {

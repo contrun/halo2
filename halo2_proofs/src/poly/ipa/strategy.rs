@@ -1,4 +1,4 @@
-use std::marker::PhantomData;
+use core::marker::PhantomData;
 
 use super::commitment::{IPACommitmentScheme, ParamsIPA, ParamsVerifierIPA};
 use super::msm::MSMIPA;
@@ -13,6 +13,7 @@ use crate::{
         strategy::{Guard, VerificationStrategy},
     },
     transcript::EncodedChallenge,
+    vec, Vec,
 };
 use ff::Field;
 use group::Curve;

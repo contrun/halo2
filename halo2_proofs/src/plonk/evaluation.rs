@@ -1,3 +1,4 @@
+use crate::collections::BTreeMap;
 use crate::multicore;
 use crate::plonk::lookup::prover::Committed;
 use crate::plonk::permutation::Argument;
@@ -5,11 +6,20 @@ use crate::plonk::{lookup, permutation, AdviceQuery, Any, FixedQuery, InstanceQu
 use crate::poly::Basis;
 use crate::{
     arithmetic::{eval_polynomial, parallelize, CurveAffine, FieldExt},
+    format,
     poly::{
         commitment::Params, Coeff, EvaluationDomain, ExtendedLagrangeCoeff, LagrangeCoeff,
         Polynomial, ProverQuery, Rotation,
     },
     transcript::{EncodedChallenge, TranscriptWrite},
+    vec, String, Vec,
+};
+use core::convert::TryInto;
+use core::num::ParseIntError;
+use core::slice;
+use core::{
+    iter,
+    ops::{Index, Mul, MulAssign},
 };
 use group::prime::PrimeCurve;
 use group::{
@@ -17,14 +27,6 @@ use group::{
     Curve,
 };
 use std::any::TypeId;
-use std::convert::TryInto;
-use std::num::ParseIntError;
-use std::slice;
-use std::{
-    collections::BTreeMap,
-    iter,
-    ops::{Index, Mul, MulAssign},
-};
 
 use super::{ConstraintSystem, Expression};
 

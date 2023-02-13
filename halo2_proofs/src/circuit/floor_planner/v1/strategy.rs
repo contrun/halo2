@@ -1,11 +1,8 @@
-use std::{
-    cmp,
-    collections::{BTreeSet, HashMap},
-    ops::Range,
-};
+use crate::collections::{BTreeSet, HashMap};
+use core::{cmp, ops::Range};
 
 use super::{RegionColumn, RegionShape};
-use crate::{circuit::RegionStart, plonk::Any};
+use crate::{circuit::RegionStart, plonk::Any, Vec};
 
 /// A region allocated within a column.
 #[derive(Clone, Default, Debug, PartialEq, Eq)]

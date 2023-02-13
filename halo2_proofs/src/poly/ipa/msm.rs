@@ -1,12 +1,13 @@
 use super::commitment::{IPACommitmentScheme, ParamsIPA};
 use crate::arithmetic::{best_multiexp, parallelize, CurveAffine};
+use crate::collections::BTreeMap;
 use crate::poly::{
     commitment::{CommitmentScheme, Params, MSM},
     ipa::commitment::ParamsVerifierIPA,
 };
+use crate::{vec, Vec};
 use ff::Field;
 use group::Group;
-use std::collections::BTreeMap;
 
 /// A multiscalar multiplication in the polynomial commitment scheme
 #[derive(Debug, Clone)]

@@ -1,8 +1,8 @@
 //! The Poseidon algebraic hash function.
 
-use std::convert::TryInto;
-use std::fmt;
-use std::marker::PhantomData;
+use core::convert::TryInto;
+use core::fmt;
+use core::marker::PhantomData;
 
 use group::ff::Field;
 use halo2_proofs::{

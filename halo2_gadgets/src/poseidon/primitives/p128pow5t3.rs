@@ -67,7 +67,7 @@ impl Spec<Fq, 3, 2> for P128Pow5T3 {
 #[cfg(test)]
 mod tests {
     use ff::PrimeField;
-    use std::marker::PhantomData;
+    use core::marker::PhantomData;
 
     use halo2curves::FieldExt;
 

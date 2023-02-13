@@ -19,7 +19,7 @@ use halo2_proofs::{
     },
 };
 use rand_core::{OsRng, RngCore};
-use std::iter;
+use core::iter;
 
 fn rand_2d_array<F: FieldExt, R: RngCore, const W: usize, const H: usize>(
     rng: &mut R,
@@ -337,7 +337,7 @@ fn main() {
 
     #[cfg(not(feature = "sanity-checks"))]
     {
-        use std::ops::IndexMut;
+        use core::ops::IndexMut;
 
         let mut circuit = circuit.clone();
         circuit.shuffled = circuit.shuffled.map(|mut shuffled| {

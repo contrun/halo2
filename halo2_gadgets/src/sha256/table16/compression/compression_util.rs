@@ -10,7 +10,7 @@ use halo2_proofs::{
     plonk::{Advice, Column, Error},
 };
 use halo2curves::pasta::pallas;
-use std::convert::TryInto;
+use core::convert::TryInto;
 
 // Test vector 'abc'
 #[cfg(test)]
@@ -77,7 +77,7 @@ impl From<usize> for MainRoundIdx {
     }
 }
 
-impl std::ops::Add<usize> for MainRoundIdx {
+impl core::ops::Add<usize> for MainRoundIdx {
     type Output = Self;
 
     fn add(self, rhs: usize) -> Self::Output {
@@ -86,13 +86,13 @@ impl std::ops::Add<usize> for MainRoundIdx {
 }
 
 impl Ord for MainRoundIdx {
-    fn cmp(&self, other: &Self) -> std::cmp::Ordering {
+    fn cmp(&self, other: &Self) -> core::cmp::Ordering {
         self.0.cmp(&other.0)
     }
 }
 
 impl PartialOrd for MainRoundIdx {
-    fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
+    fn partial_cmp(&self, other: &Self) -> Option<core::cmp::Ordering> {
         Some(self.cmp(other))
     }
 }
