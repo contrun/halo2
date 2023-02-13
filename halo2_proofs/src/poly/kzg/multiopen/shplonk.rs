@@ -4,6 +4,8 @@ mod verifier;
 pub use prover::ProverSHPLONK;
 pub use verifier::VerifierSHPLONK;
 
+use crate::collections::{BTreeMap, BTreeSet};
+use crate::collections::{HashMap, HashSet};
 use crate::{
     arithmetic::{eval_polynomial, lagrange_interpolate, CurveAffine, FieldExt},
     poly::{query::Query, Coeff, Polynomial},
@@ -12,10 +14,6 @@ use crate::{
 };
 use core::marker::PhantomData;
 use rayon::prelude::*;
-use std::{
-    collections::{btree_map::Entry, BTreeMap, BTreeSet, HashMap, HashSet},
-    sync::Arc,
-};
 
 #[derive(Clone, Copy, Debug)]
 struct U {}

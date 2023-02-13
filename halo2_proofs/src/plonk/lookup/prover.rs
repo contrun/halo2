@@ -26,7 +26,6 @@ use group::{
     Curve,
 };
 use rand_core::RngCore;
-use std::any::TypeId;
 
 #[derive(Debug)]
 pub(in crate::plonk) struct Permuted<C: CurveAffine> {

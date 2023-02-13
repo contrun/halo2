@@ -17,7 +17,7 @@ use crate::{
     format, maybe_eprint, maybe_eprintln,
     plonk::{Any, Column, ConstraintSystem, Expression, Gate},
     poly::Rotation,
-    vec, String, Vec,
+    vec, String, ToString, Vec,
 };
 
 mod emitter;

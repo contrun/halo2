@@ -950,7 +950,7 @@ impl<F: Field> Expression<F> {
         }
     }
 
-    fn write_identifier<W: std::io::Write>(&self, writer: &mut W) -> std::io::Result<()> {
+    fn write_identifier<W: crate::io::Write>(&self, writer: &mut W) -> crate::io::Result<()> {
         match self {
             Expression::Constant(scalar) => write!(writer, "{:?}", scalar),
             Expression::Selector(selector) => write!(writer, "selector[{}]", selector.0),
@@ -1008,9 +1008,9 @@ impl<F: Field> Expression<F> {
     /// do the same calculation (but the expressions don't need to be exactly equal
     /// in how they are composed e.g. `1 + 2` and `2 + 1` can have the same identifier).
     pub fn identifier(&self) -> String {
-        let mut cursor = std::io::Cursor::new(Vec::new());
-        self.write_identifier(&mut cursor).unwrap();
-        String::from_utf8(cursor.into_inner()).unwrap()
+        let mut v = Vec::new();
+        self.write_identifier(&mut v).unwrap();
+        String::from_utf8(v).unwrap()
     }
 
     /// Compute the degree of this polynomial

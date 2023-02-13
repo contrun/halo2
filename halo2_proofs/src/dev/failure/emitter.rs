@@ -8,7 +8,7 @@ use crate::{
     dev::{metadata, util},
     format, maybe_eprint, maybe_eprintln,
     plonk::{Advice, Any, Expression},
-    vec, String, Vec,
+    vec, String, ToString, Vec,
 };
 
 fn padded(p: char, width: usize, text: &str) -> String {

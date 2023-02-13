@@ -3,7 +3,7 @@
 use super::metadata::Column as ColumnMetadata;
 use crate::collections::HashMap;
 use crate::plonk::{self, Any};
-use crate::{format, vec, String, Vec};
+use crate::{format, vec, String, ToOwned, Vec};
 use core::fmt::{self, Debug};
 /// Metadata about a column within a circuit.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]

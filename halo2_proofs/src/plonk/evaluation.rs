@@ -26,7 +26,6 @@ use group::{
     ff::{BatchInvert, Field},
     Curve,
 };
-use std::any::TypeId;
 
 use super::{ConstraintSystem, Expression};
 

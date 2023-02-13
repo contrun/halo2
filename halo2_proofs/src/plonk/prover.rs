@@ -6,10 +6,6 @@ use ff::Field;
 use group::Curve;
 use halo2curves::CurveExt;
 use rand_core::RngCore;
-use std::env::var;
-use std::sync::atomic::AtomicUsize;
-use std::sync::atomic::Ordering;
-use std::time::Instant;
 
 use super::{
     circuit::{

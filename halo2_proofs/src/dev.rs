@@ -5,7 +5,6 @@ use crate::collections::HashSet;
 use core::fmt;
 use core::iter;
 use core::ops::{Add, Mul, Neg, Range};
-use std::time::{Duration, Instant};
 
 use blake2b_simd::blake2b;
 use ff::Field;

@@ -35,12 +35,11 @@ macro_rules! maybe_eprint {
 }
 
 extern crate alloc;
-use alloc::{format, string::String, vec, vec::Vec};
-
-use hashbrown as collections;
+use alloc::{borrow::ToOwned, format, string::String, string::ToString, vec, vec::Vec};
 
 pub mod arithmetic;
 pub mod circuit;
+pub mod collections;
 pub use halo2curves;
 pub use halo2curves::io;
 mod multicore;
