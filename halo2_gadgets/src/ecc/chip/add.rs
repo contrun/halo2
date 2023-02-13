@@ -5,7 +5,7 @@ use halo2_proofs::{
     poly::Rotation,
 };
 use halo2curves::{pasta::pallas, FieldExt};
-use crate::collections::HashSet;
+use std::collections::HashSet;
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct Config {
