@@ -75,9 +75,7 @@ impl FloorPlanner for V1 {
                 .without_witnesses()
                 .synthesize(config.clone(), V1Pass::<_, CS>::measure(pass))?;
         }
-        for (name, shape) in &measure.regions {
-            log::debug!("region height {}: {}", name, shape.row_count())
-        }
+        for (name, shape) in &measure.regions {}
 
         // Planning:
         // - Position the regions.

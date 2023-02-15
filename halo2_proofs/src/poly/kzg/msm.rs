@@ -159,10 +159,6 @@ impl<'a, E: MultiMillerLoop + Debug> DualMSM<'a, E> {
         let (term_1, term_2) = ((&left, &s_g2_prepared), (&right, &n_g2_prepared));
         let terms = &[term_1, term_2];
 
-        log::debug!(
-            "check pairing: {:?}",
-            (left, right, self.params.s_g2, -self.params.g2)
-        );
         bool::from(
             E::multi_miller_loop(&terms[..])
                 .final_exponentiation()

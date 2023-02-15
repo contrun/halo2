@@ -340,14 +340,7 @@ pub fn create_proof<
                 {
                     for (idx, advice_col) in witness.advice.iter().enumerate() {
                         if pk.vk.cs.advice_column_phase[idx].0 < current_phase.0 {
-                            if advice_assignments[circuit_idx][idx].values != advice_col.values {
-                                log::error!(
-                                    "advice column {}(at {:?}) changed when {:?}",
-                                    idx,
-                                    pk.vk.cs.advice_column_phase[idx],
-                                    current_phase
-                                );
-                            }
+                            if advice_assignments[circuit_idx][idx].values != advice_col.values {}
                         }
                     }
                 }

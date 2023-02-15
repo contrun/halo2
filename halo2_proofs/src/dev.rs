@@ -633,11 +633,6 @@ impl<F: FieldExt> MockProver<F> {
                     for (idx, advice_values) in prover.advice.iter().enumerate() {
                         if cs.advice_column_phase[idx].0 < current_phase.0 {
                             if advice_values != &last_advice[idx] {
-                                log::error!(
-                                    "PHASE ERR column{} not same after phase {:?}",
-                                    idx,
-                                    current_phase
-                                );
                                 err = true;
                             }
                         }
