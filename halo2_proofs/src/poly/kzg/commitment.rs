@@ -13,7 +13,7 @@ use core::ops::{Add, AddAssign, Mul, MulAssign};
 use ff::{Field, PrimeField};
 use group::{prime::PrimeCurveAffine, Curve, Group as _};
 use halo2curves::pairing::Engine;
-use rand_core::{OsRng, RngCore};
+use rand_core::RngCore;
 
 use crate::io;
 
@@ -67,7 +67,7 @@ impl<E: Engine + Debug> ParamsKZG<E> {
     /// Initializes parameters for the curve, Draws random toxic point inside of the function
     /// MUST NOT be used in production
     pub fn unsafe_setup(k: u32) -> Self {
-        let s = E::Scalar::random(OsRng);
+        let s = E::Scalar::random(crate::get_rng());
         Self::unsafe_setup_with_s(k, s)
     }
 
@@ -326,7 +326,7 @@ where
     }
 
     fn new(k: u32) -> Self {
-        Self::setup(k, OsRng)
+        Self::setup(k, crate::get_rng())
     }
 
     fn commit(&self, poly: &Polynomial<E::Scalar, Coeff>, _: Blind<E::Scalar>) -> E::G1 {
@@ -356,10 +356,10 @@ mod test {
     use crate::poly::{Coeff, LagrangeCoeff, Polynomial};
 
     use core::marker::PhantomData;
+    use core::ops::{Add, AddAssign, Mul, MulAssign};
     use ff::{Field, PrimeField};
     use group::{prime::PrimeCurveAffine, Curve, Group as _};
     use halo2curves::bn256::G1Affine;
-    use core::ops::{Add, AddAssign, Mul, MulAssign};
 
     use crate::io;
 

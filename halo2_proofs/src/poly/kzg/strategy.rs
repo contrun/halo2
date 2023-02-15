@@ -21,7 +21,6 @@ use halo2curves::{
     pairing::{Engine, MillerLoopResult, MultiMillerLoop},
     CurveAffine,
 };
-use rand_core::OsRng;
 
 /// Wrapper for linear verification accumulator
 #[derive(Debug, Clone)]
@@ -105,7 +104,8 @@ where
         mut self,
         f: impl FnOnce(V::MSMAccumulator) -> Result<V::Guard, Error>,
     ) -> Result<Self::Output, Error> {
-        self.msm_accumulator.scale(E::Scalar::random(OsRng));
+        self.msm_accumulator
+            .scale(E::Scalar::random(crate::get_rng()));
 
         // Guard is updated with new msm contributions
         let guard = f(self.msm_accumulator)?;

@@ -53,3 +53,9 @@ pub mod transcript;
 pub mod dev;
 mod helpers;
 pub use helpers::SerdeFormat;
+
+pub(crate) fn get_rng() -> rand_chacha::ChaCha20Rng {
+    use rand_chacha::ChaCha20Rng;
+    use rand_core::SeedableRng;
+    <ChaCha20Rng as SeedableRng>::seed_from_u64(42)
+}

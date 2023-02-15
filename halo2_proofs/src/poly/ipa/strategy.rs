@@ -18,7 +18,7 @@ use crate::{
 use ff::Field;
 use group::Curve;
 use halo2curves::CurveAffine;
-use rand_core::{OsRng, RngCore};
+use rand_core::RngCore;
 
 /// Wrapper for verification accumulator
 #[derive(Debug, Clone)]
@@ -99,7 +99,7 @@ impl<'params, C: CurveAffine>
         mut self,
         f: impl FnOnce(MSMIPA<'params, C>) -> Result<GuardIPA<'params, C>, Error>,
     ) -> Result<Self::Output, Error> {
-        self.msm.scale(C::Scalar::random(OsRng));
+        self.msm.scale(C::Scalar::from(42));
         let guard = f(self.msm)?;
 
         Ok(Self {

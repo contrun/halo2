@@ -20,7 +20,7 @@ fn multiexp_serial<C: CurveAffine>(coeffs: &[C::Scalar], bases: &[C], acc: &mut 
     } else if bases.len() < 32 {
         3
     } else {
-        (f64::from(bases.len() as u32)).ln().ceil() as usize
+        4
     };
 
     fn get_at<F: PrimeField>(segment: usize, c: usize, bytes: &F::Repr) -> usize {

@@ -27,7 +27,6 @@ use core::ops::MulAssign;
 use ff::Field;
 use group::Group;
 use halo2curves::pairing::{Engine, MillerLoopResult, MultiMillerLoop};
-use rand_core::OsRng;
 
 /// Concrete KZG multiopen verifier with SHPLONK variant
 #[derive(Debug)]
