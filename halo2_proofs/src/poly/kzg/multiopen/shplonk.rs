@@ -13,7 +13,6 @@ use crate::{
     vec, Vec,
 };
 use core::marker::PhantomData;
-use rayon::prelude::*;
 
 #[derive(Clone, Copy, Debug)]
 struct U {}
@@ -118,14 +117,14 @@ where
     }
 
     let rotation_sets = rotation_set_commitment_map
-        .into_par_iter()
+        .into_iter()
         .map(|(rotations, commitments)| {
             let rotations_vec = rotations.iter().collect::<Vec<_>>();
             let commitments: Vec<Commitment<F, Q::Commitment>> = commitments
-                .into_par_iter()
+                .into_iter()
                 .map(|commitment| {
                     let evals: Vec<F> = rotations_vec
-                        .par_iter()
+                        .iter()
                         .map(|&&rotation| get_eval(commitment, rotation))
                         .collect();
                     Commitment((commitment, evals))
@@ -158,8 +157,8 @@ mod proptests {
     use crate::poly::Rotation;
     use halo2curves::{pasta::Fp, FieldExt};
 
-    use core::convert::TryFrom;
     use crate::collections::BTreeMap;
+    use core::convert::TryFrom;
 
     #[derive(Debug, Clone)]
     struct MyQuery<F> {

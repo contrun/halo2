@@ -22,7 +22,6 @@ use ff::Field;
 use group::Curve;
 use halo2curves::pairing::Engine;
 use rand_core::RngCore;
-use rayon::prelude::*;
 
 fn div_by_vanishing<F: FieldExt>(poly: Polynomial<F, Coeff>, roots: &[F]) -> Vec<F> {
     let poly = roots
@@ -141,7 +140,7 @@ where
                 // [P_i_0(X) - R_i_0(X), P_i_1(X) - R_i_1(X), ... ]
                 let numerators = rotation_set
                     .commitments
-                    .par_iter()
+                    .iter()
                     .map(|commitment| commitment.quotient_contribution())
                     .collect::<Vec<_>>();
 
@@ -178,11 +177,11 @@ where
         );
 
         let rotation_sets: Vec<RotationSetExtension<E::G1Affine>> = rotation_sets
-            .into_par_iter()
+            .into_iter()
             .map(|rotation_set| {
                 let commitments: Vec<CommitmentExtension<E::G1Affine>> = rotation_set
                     .commitments
-                    .par_iter()
+                    .iter()
                     .map(|commitment_data| commitment_data.extend(&rotation_set.points))
                     .collect();
                 rotation_set.extend(commitments)
@@ -192,7 +191,7 @@ where
         let v: ChallengeV<_> = transcript.squeeze_challenge_scalar();
 
         let quotient_polynomials = rotation_sets
-            .par_iter()
+            .iter()
             .map(quotient_contribution)
             .collect::<Vec<_>>();
 
@@ -224,7 +223,7 @@ where
                 // where u is random evaluation point
                 let inner_contributions = rotation_set
                     .commitments
-                    .par_iter()
+                    .iter()
                     .map(|commitment| commitment.linearisation_contribution(*u)).collect::<Vec<_>>();
 
                 // define inner contributor polynomial as
@@ -243,7 +242,7 @@ where
             Vec<Polynomial<E::Scalar, Coeff>>,
             Vec<E::Scalar>,
         ) = rotation_sets
-            .into_par_iter()
+            .into_iter()
             .map(linearisation_contribution)
             .unzip();
 

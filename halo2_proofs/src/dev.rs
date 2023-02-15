@@ -24,12 +24,6 @@ use crate::{
     poly::Rotation,
     vec, String, Vec,
 };
-use rayon::{
-    iter::{
-        IndexedParallelIterator, IntoParallelIterator, IntoParallelRefIterator, ParallelIterator,
-    },
-    slice::ParallelSliceMut,
-};
 
 pub mod metadata;
 use metadata::Column as ColumnMetadata;
@@ -1063,12 +1057,12 @@ impl<F: FieldExt> MockProver<F> {
         let lookup_input_row_ids = lookup_input_row_ids.collect::<Vec<_>>();
 
         // check all the row ids are valid
-        gate_row_ids.par_iter().for_each(|row_id| {
+        gate_row_ids.iter().for_each(|row_id| {
             if !self.usable_rows.contains(row_id) {
                 panic!("invalid gate row id {}", row_id);
             }
         });
-        lookup_input_row_ids.par_iter().for_each(|row_id| {
+        lookup_input_row_ids.iter().for_each(|row_id| {
             if !self.usable_rows.contains(row_id) {
                 panic!("invalid gate row id {}", row_id);
             }
@@ -1092,7 +1086,7 @@ impl<F: FieldExt> MockProver<F> {
                     .enumerate()
                     .filter(move |(_, g)| g.queried_selectors().contains(selector))
                     .flat_map(move |(gate_index, gate)| {
-                        at.par_iter()
+                        at.iter()
                             .flat_map(move |selector_row| {
                                 // Selectors are queried with no rotation.
                                 let gate_row = *selector_row as i32;
@@ -1141,8 +1135,8 @@ impl<F: FieldExt> MockProver<F> {
                     (self.n as usize - (self.cs.blinding_factors() + 1))..(self.n as usize);
                 (gate_row_ids
                     .clone()
-                    .into_par_iter()
-                    .chain(blinding_rows.into_par_iter()))
+                    .into_iter()
+                    .chain(blinding_rows.into_iter()))
                 .flat_map(move |row| {
                     let row = row as i32 + n;
                     gate.polynomials()
@@ -1275,7 +1269,7 @@ impl<F: FieldExt> MockProver<F> {
                         cached_table = self
                             .usable_rows
                             .clone()
-                            .into_par_iter()
+                            .into_iter()
                             .filter_map(|table_row| {
                                 let t = lookup
                                     .table_expressions
@@ -1290,13 +1284,13 @@ impl<F: FieldExt> MockProver<F> {
                                 }
                             })
                             .collect();
-                        cached_table.par_sort_unstable();
+                        cached_table.sort_unstable();
                     }
                     let table = &cached_table;
 
                     let mut inputs: Vec<(Vec<_>, usize)> = lookup_input_row_ids
                         .clone()
-                        .into_par_iter()
+                        .into_iter()
                         .filter_map(|input_row| {
                             let t = lookup
                                 .input_expressions
@@ -1312,10 +1306,10 @@ impl<F: FieldExt> MockProver<F> {
                             }
                         })
                         .collect();
-                    inputs.par_sort_unstable();
+                    inputs.sort_unstable();
 
                     inputs
-                        .par_iter()
+                        .iter()
                         .filter_map(move |(input, input_row)| {
                             if table.binary_search(input).is_err() {
                                 Some(VerifyFailure::Lookup {
@@ -1360,7 +1354,7 @@ impl<F: FieldExt> MockProver<F> {
                     // Iterate over each row of the column to check that the cell's
                     // value is preserved by the mapping.
                     values
-                        .par_iter()
+                        .iter()
                         .enumerate()
                         .filter_map(move |(row, cell)| {
                             let original_cell = original(column, row);

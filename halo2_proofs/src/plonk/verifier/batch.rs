@@ -4,7 +4,6 @@ use core::marker::PhantomData;
 use group::ff::Field;
 use halo2curves::CurveAffine;
 use rand_core::{OsRng, RngCore};
-use rayon::iter::{IndexedParallelIterator, IntoParallelIterator, ParallelIterator};
 
 use super::{verify_proof, VerificationStrategy};
 use crate::{
@@ -104,7 +103,7 @@ impl<C: CurveAffine> BatchVerifier<C> {
 
         let final_msm = self
             .items
-            .into_par_iter()
+            .into_iter()
             .enumerate()
             .map(|(i, item)| {
                 let instances: Vec<Vec<_>> = item
