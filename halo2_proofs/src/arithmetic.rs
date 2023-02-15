@@ -1,7 +1,6 @@
 //! This module provides common utilities, traits and structures for group,
 //! field and polynomial arithmetic.
 
-use super::multicore;
 use crate::{vec, Vec};
 pub use ff::Field;
 use group::{
@@ -135,30 +134,9 @@ pub fn small_multiexp<C: CurveAffine>(coeffs: &[C::Scalar], bases: &[C]) -> C::C
 pub fn best_multiexp<C: CurveAffine>(coeffs: &[C::Scalar], bases: &[C]) -> C::Curve {
     assert_eq!(coeffs.len(), bases.len());
 
-    let num_threads = multicore::current_num_threads();
-    if coeffs.len() > num_threads {
-        let chunk = coeffs.len() / num_threads;
-        let num_chunks = coeffs.chunks(chunk).len();
-        let mut results = vec![C::Curve::identity(); num_chunks];
-        multicore::scope(|scope| {
-            let chunk = coeffs.len() / num_threads;
-
-            for ((coeffs, bases), acc) in coeffs
-                .chunks(chunk)
-                .zip(bases.chunks(chunk))
-                .zip(results.iter_mut())
-            {
-                scope.spawn(move |_| {
-                    multiexp_serial(coeffs, bases, acc);
-                });
-            }
-        });
-        results.iter().fold(C::Curve::identity(), |a, b| a + b)
-    } else {
-        let mut acc = C::Curve::identity();
-        multiexp_serial(coeffs, bases, &mut acc);
-        acc
-    }
+    let mut acc = C::Curve::identity();
+    multiexp_serial(coeffs, bases, &mut acc);
+    acc
 }
 
 /// Performs a radix-$2$ Fast-Fourier Transformation (FFT) on a vector of size
@@ -172,17 +150,7 @@ pub fn best_multiexp<C: CurveAffine>(coeffs: &[C::Scalar], bases: &[C]) -> C::Cu
 ///
 /// This will use multithreading if beneficial.
 pub fn best_fft<G: Group>(a: &mut [G], omega: G::Scalar, log_n: u32) {
-    let threads = multicore::current_num_threads();
-    let log_split = log2_floor(threads) as usize;
-    let n = a.len() as usize;
-    let sub_n = n >> log_split;
-    let split_m = 1 << log_split;
-
-    if sub_n < split_m {
-        serial_fft(a, omega, log_n);
-    } else {
-        parallel_fft(a, omega, log_n);
-    }
+    serial_fft(a, omega, log_n);
 }
 
 fn bitreverse(mut n: usize, l: usize) -> usize {
@@ -354,70 +322,6 @@ pub fn generate_twiddle_lookup_table<F: Field>(
     twiddle_lut
 }
 
-pub fn parallel_fft<G: Group>(a: &mut [G], omega: G::Scalar, log_n: u32) {
-    let n = a.len() as usize;
-    assert_eq!(n, 1 << log_n);
-
-    let log_split = log2_floor(multicore::current_num_threads()) as usize;
-    let split_m = 1 << log_split;
-    let sub_n = n >> log_split as usize;
-    let twiddle_lut = generate_twiddle_lookup_table(omega, log_n, SPARSE_TWIDDLE_DEGREE, true);
-
-    // split fft
-    let mut tmp = vec![G::group_zero(); n];
-    // if unsafe code is allowed, a 10% performance improvement can be achieved
-    // let mut tmp: Vec<G> = Vec::with_capacity(n);
-    // unsafe{ tmp.set_len(n); }
-    multicore::scope(|scope| {
-        let a = &*a;
-        let twiddle_lut = &*twiddle_lut;
-        for (chunk_idx, tmp) in tmp.chunks_mut(sub_n).enumerate() {
-            scope.spawn(move |_| {
-                let split_fft_offset = chunk_idx * sub_n >> log_split;
-                for (i, tmp) in tmp.chunks_mut(split_m).enumerate() {
-                    let split_fft_offset = split_fft_offset + i;
-                    split_radix_fft(tmp, a, twiddle_lut, n, split_fft_offset, log_split);
-                }
-            });
-        }
-    });
-
-    // shuffle
-    parallelize(a, |a, start| {
-        for (idx, a) in a.iter_mut().enumerate() {
-            let idx = start + idx;
-            let i = idx / sub_n;
-            let j = idx % sub_n;
-            *a = tmp[j * split_m + i];
-        }
-    });
-
-    // sub fft
-    let new_omega = omega.pow_vartime(&[split_m as u64, 0, 0, 0]);
-    multicore::scope(|scope| {
-        for a in a.chunks_mut(sub_n) {
-            scope.spawn(move |_| {
-                serial_fft(a, new_omega, log_n - log_split as u32);
-            });
-        }
-    });
-
-    // copy & unshuffle
-    let mask = (1 << log_split) - 1;
-    parallelize(&mut tmp, |tmp, start| {
-        for (idx, tmp) in tmp.iter_mut().enumerate() {
-            let idx = start + idx;
-            *tmp = a[idx];
-        }
-    });
-    parallelize(a, |a, start| {
-        for (idx, a) in a.iter_mut().enumerate() {
-            let idx = start + idx;
-            *a = tmp[sub_n * (idx & mask) + (idx >> log_split)];
-        }
-    });
-}
-
 /// Convert coefficient bases group elements to lagrange basis by inverse FFT.
 pub fn g_to_lagrange<C: CurveAffine>(g_projective: Vec<C::Curve>, k: u32) -> Vec<C> {
     let n_inv = C::Scalar::TWO_INV.pow_vartime(&[k as u64, 0, 0, 0]);
@@ -452,25 +356,7 @@ pub fn eval_polynomial<F: Field>(poly: &[F], point: F) -> F {
             .rev()
             .fold(F::zero(), |acc, coeff| acc * point + coeff)
     }
-    let n = poly.len();
-    let num_threads = multicore::current_num_threads();
-    if n * 2 < num_threads {
-        evaluate(poly, point)
-    } else {
-        let chunk_size = (n + num_threads - 1) / num_threads;
-        let mut parts = vec![F::zero(); num_threads];
-        multicore::scope(|scope| {
-            for (chunk_idx, (out, poly)) in
-                parts.chunks_mut(1).zip(poly.chunks(chunk_size)).enumerate()
-            {
-                scope.spawn(move |_| {
-                    let start = chunk_idx * chunk_size;
-                    out[0] = evaluate(poly, point) * point.pow_vartime(&[start as u64, 0, 0, 0]);
-                });
-            }
-        });
-        parts.iter().fold(F::zero(), |acc, coeff| acc + coeff)
-    }
+    evaluate(poly, point)
 }
 
 /// This computes the inner product of two vectors `a` and `b`.
@@ -514,34 +400,12 @@ where
 /// This simple utility function will parallelize an operation that is to be
 /// performed over a mutable slice.
 pub fn parallelize<T: Send, F: Fn(&mut [T], usize) + Send + Sync + Clone>(v: &mut [T], f: F) {
-    let n = v.len();
-    let num_threads = multicore::current_num_threads();
-    let mut chunk = (n as usize) / num_threads;
-    if chunk < num_threads {
-        chunk = 1;
+    let chunk = 1;
+
+    for (chunk_num, v) in v.chunks_mut(chunk).enumerate() {
+        let start = chunk_num * chunk;
+        f(v, start);
     }
-
-    multicore::scope(|scope| {
-        for (chunk_num, v) in v.chunks_mut(chunk).enumerate() {
-            let f = f.clone();
-            scope.spawn(move |_| {
-                let start = chunk_num * chunk;
-                f(v, start);
-            });
-        }
-    });
-}
-
-fn log2_floor(num: usize) -> u32 {
-    assert!(num > 0);
-
-    let mut pow = 0;
-
-    while (1 << (pow + 1)) <= num {
-        pow += 1;
-    }
-
-    pow
 }
 
 /// Returns coefficients of an n - 1 degree polynomial given a set of n points
@@ -603,23 +467,7 @@ pub fn lagrange_interpolate<F: FieldExt>(points: &[F], evals: &[F]) -> Vec<F> {
 }
 
 pub(crate) fn evaluate_vanishing_polynomial<F: FieldExt>(roots: &[F], z: F) -> F {
-    fn evaluate<F: FieldExt>(roots: &[F], z: F) -> F {
-        roots.iter().fold(F::one(), |acc, point| (z - point) * acc)
-    }
-    let n = roots.len();
-    let num_threads = multicore::current_num_threads();
-    if n * 2 < num_threads {
-        evaluate(roots, z)
-    } else {
-        let chunk_size = (n + num_threads - 1) / num_threads;
-        let mut parts = vec![F::one(); num_threads];
-        multicore::scope(|scope| {
-            for (out, roots) in parts.chunks_mut(1).zip(roots.chunks(chunk_size)) {
-                scope.spawn(move |_| out[0] = evaluate(roots, z));
-            }
-        });
-        parts.iter().fold(F::one(), |acc, part| acc * part)
-    }
+    roots.iter().fold(F::one(), |acc, point| (z - point) * acc)
 }
 
 pub(crate) fn powers<F: FieldExt>(base: F) -> impl Iterator<Item = F> {

@@ -46,7 +46,6 @@ pub use halo2curves::io;
 
 pub mod arithmetic;
 pub mod circuit;
-mod multicore;
 pub mod plonk;
 pub mod poly;
 pub mod transcript;

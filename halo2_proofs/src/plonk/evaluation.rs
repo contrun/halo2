@@ -1,5 +1,4 @@
 use crate::collections::BTreeMap;
-use crate::multicore;
 use crate::plonk::lookup::prover::Committed;
 use crate::plonk::permutation::Argument;
 use crate::plonk::{lookup, permutation, AdviceQuery, Any, FixedQuery, InstanceQuery, ProvingKey};
@@ -344,7 +343,6 @@ impl<C: CurveAffine> Evaluator<C> {
                 let mut values = domain.empty_lagrange();
 
                 // Core expression evaluations
-                let num_threads = multicore::current_num_threads();
                 for (((advice, instance), lookups), permutation) in advice
                     .iter()
                     .zip(instance.iter())
@@ -352,33 +350,29 @@ impl<C: CurveAffine> Evaluator<C> {
                     .zip(permutations.iter())
                 {
                     // Custom gates
-                    multicore::scope(|scope| {
-                        let chunk_size = (size + num_threads - 1) / num_threads;
-                        for (thread_idx, values) in values.chunks_mut(chunk_size).enumerate() {
-                            let start = thread_idx * chunk_size;
-                            scope.spawn(move |_| {
-                                let mut eval_data = self.custom_gates.instance();
-                                for (i, value) in values.iter_mut().enumerate() {
-                                    let idx = start + i;
-                                    *value = self.custom_gates.evaluate(
-                                        &mut eval_data,
-                                        fixed,
-                                        advice,
-                                        instance,
-                                        challenges,
-                                        &beta,
-                                        &gamma,
-                                        &theta,
-                                        &y,
-                                        value,
-                                        idx,
-                                        rot_scale,
-                                        isize,
-                                    );
-                                }
-                            });
+                    let chunk_size = 1;
+                    for (thread_idx, values) in values.chunks_mut(chunk_size).enumerate() {
+                        let start = thread_idx * chunk_size;
+                        let mut eval_data = self.custom_gates.instance();
+                        for (i, value) in values.iter_mut().enumerate() {
+                            let idx = start + i;
+                            *value = self.custom_gates.evaluate(
+                                &mut eval_data,
+                                fixed,
+                                advice,
+                                instance,
+                                challenges,
+                                &beta,
+                                &gamma,
+                                &theta,
+                                &y,
+                                value,
+                                idx,
+                                rot_scale,
+                                isize,
+                            );
                         }
-                    });
+                    }
 
                     // Permutations
                     let sets = &permutation.sets;

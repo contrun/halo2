@@ -7,7 +7,6 @@ use rand_core::{OsRng, RngCore};
 
 use super::{verify_proof, VerificationStrategy};
 use crate::{
-    multicore,
     plonk::{Error, VerifyingKey},
     poly::{
         commitment::{Params, MSM},
