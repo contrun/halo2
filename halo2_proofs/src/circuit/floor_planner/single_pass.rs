@@ -5,8 +5,6 @@ use core::marker::PhantomData;
 
 use ff::Field;
 
-use ark_std::{end_timer, start_timer};
-
 use crate::{
     circuit::{
         layouter::{RegionColumn, RegionLayouter, RegionShape, TableLayouter},
@@ -35,10 +33,8 @@ impl FloorPlanner for SimpleFloorPlanner {
         config: C::Config,
         constants: Vec<Column<Fixed>>,
     ) -> Result<(), Error> {
-        let timer = start_timer!(|| format!("SimpleFloorPlanner synthesize"));
         let layouter = SingleChipLayouter::new(cs, constants)?;
         let result = circuit.synthesize(config, layouter);
-        end_timer!(timer);
         result
     }
 }
@@ -90,16 +86,13 @@ impl<'a, F: Field, CS: Assignment<F> + 'a> Layouter<F> for SingleChipLayouter<'a
         NR: Into<String>,
     {
         let region_name: String = name().into();
-        let timer = start_timer!(|| format!("assign region: {}", region_name));
         let region_index = self.regions.len();
 
         // Get shape of the region.
         let mut shape = RegionShape::new(region_index.into());
         {
-            let timer_1st = start_timer!(|| format!("assign region 1st pass: {}", region_name));
             let region: &mut dyn RegionLayouter<F> = &mut shape;
             assignment(region.into())?;
-            end_timer!(timer_1st);
         }
         log::debug!("region row_count {}: {}", region_name, shape.row_count());
 
@@ -130,10 +123,8 @@ impl<'a, F: Field, CS: Assignment<F> + 'a> Layouter<F> for SingleChipLayouter<'a
         self.cs.enter_region(name);
         let mut region = SingleChipLayouterRegion::new(self, region_index.into());
         let result = {
-            let timer_2nd = start_timer!(|| format!("assign region 2nd pass: {}", region_name));
             let region: &mut dyn RegionLayouter<F> = &mut region;
             let result = assignment(region.into());
-            end_timer!(timer_2nd);
             result
         }?;
         let constants_to_assign = region.constants;
@@ -168,7 +159,6 @@ impl<'a, F: Field, CS: Assignment<F> + 'a> Layouter<F> for SingleChipLayouter<'a
             }
         }
 
-        end_timer!(timer);
         Ok(result)
     }
 
