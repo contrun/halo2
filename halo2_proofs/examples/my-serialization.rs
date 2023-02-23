@@ -338,4 +338,72 @@ fn main() {
     let prover = MockProver::run(k, &circuit, vec![public_inputs]).unwrap();
     assert!(prover.verify().is_err());
     // ANCHOR_END: test-circuit
+
+    use halo2_proofs::plonk::create_proof;
+    use halo2_proofs::plonk::keygen_pk;
+    use halo2_proofs::plonk::keygen_vk;
+    use halo2_proofs::plonk::verify_proof;
+    use halo2_proofs::poly::kzg::commitment::KZGCommitmentScheme;
+    use halo2_proofs::poly::kzg::commitment::ParamsKZG;
+    use halo2_proofs::poly::kzg::multiopen::ProverGWC;
+    use halo2_proofs::poly::kzg::multiopen::VerifierGWC;
+    use halo2_proofs::poly::kzg::strategy::SingleStrategy;
+    use halo2_proofs::transcript::Blake2bRead;
+    use halo2_proofs::transcript::Blake2bWrite;
+    use halo2_proofs::transcript::Challenge255;
+    use halo2_proofs::transcript::TranscriptReadBuffer;
+    use halo2_proofs::transcript::TranscriptWriterBuffer;
+    use halo2curves::bn256::Bn256;
+    use halo2curves::bn256::G1Affine;
+    use rand_core::OsRng;
+    let params = ParamsKZG::<Bn256>::setup(k, OsRng);
+
+    let vk = keygen_vk(&params, &circuit).expect("vk should not fail");
+    let pk = keygen_pk(&params, vk.clone(), &circuit).expect("pk should not fail");
+
+    let mut vk_buffer = vec![];
+    vk.write(&mut vk_buffer, halo2_proofs::SerdeFormat::RawBytes)
+        .unwrap();
+    let mut vk_cursor = std::io::Cursor::new(vk_buffer);
+    let vk2 = halo2_proofs::plonk::VerifyingKey::<halo2curves::bn256::G1Affine>::read::<
+        _,
+        MyCircuit<Fr>,
+    >(&mut vk_cursor, halo2_proofs::SerdeFormat::RawBytes)
+    .unwrap();
+
+    let mut transcript =
+        <Blake2bWrite<_, G1Affine, _> as TranscriptWriterBuffer<_, _, Challenge255<_>>>::init(
+            vec![],
+        );
+
+    let instances: &[&[Fr]] = &[&good_public_inputs[0]];
+    create_proof::<
+        KZGCommitmentScheme<Bn256>,
+        ProverGWC<'_, Bn256>,
+        Challenge255<G1Affine>,
+        _,
+        Blake2bWrite<Vec<u8>, G1Affine, Challenge255<_>>,
+        _,
+    >(
+        &params,
+        &pk,
+        &[circuit],
+        &[instances],
+        OsRng,
+        &mut transcript,
+    )
+    .expect("prover should not fail");
+    let proof = transcript.finalize();
+
+    let strategy = SingleStrategy::new(&params);
+    let mut transcript =
+        halo2_proofs::transcript::Blake2bRead::<_, _, Challenge255<_>>::init(&proof[..]);
+    verify_proof::<
+        KZGCommitmentScheme<Bn256>,
+        VerifierGWC<'_, Bn256>,
+        Challenge255<G1Affine>,
+        Blake2bRead<&[u8], G1Affine, Challenge255<G1Affine>>,
+        SingleStrategy<'_, Bn256>,
+    >(&params, &vk2, strategy, &[instances], &mut transcript)
+    .expect("verification must succeed");
 }
